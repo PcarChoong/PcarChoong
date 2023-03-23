@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!--            <android.widget.LinearLayout-->
+    <!--                android:id="@+id/linearLayout"-->
+    <!--                android:layout_width="100dp"-->
+    <!--                android:layout_height="100dp"-->
+    <!--                android:orientation="vertical"-->
+    <!--                tools:layout_editor_absoluteX="137dp"-->
+    <!--                tools:layout_editor_absoluteY="159dp">-->
+
+    <!--            </android.widget.LinearLayout>-->
+
+    <Button
+        android:id="@+id/btn_battery"
+        android:layout_width="97dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="40dp"
+        android:text="배터리\n잔량입력"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutTmap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/et_appointmenttime"
+        app:layout_constraintTop_toBottomOf="@+id/btn_confirm" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="98dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:text="확인"
+        app:layout_constraintBottom_toTopOf="@+id/btn_battery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/et_appointmentSpace"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/currentText"
+        android:layout_width="113dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="42dp"
+        android:gravity="center"
+        android:text="현재 시각"
+        android:textColor="#3B68EF"
+        android:textSize="19sp"
+        app:layout_constraintBottom_toTopOf="@+id/appointmentText"
+        app:layout_constraintEnd_toStartOf="@+id/et_currenttime"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appointmentSpaceText" />
+
+    <EditText
+        android:id="@+id/et_appointmenttime"
+        android:layout_width="137dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="4dp"
+        android:ems="10"
+        android:hint=" : 희망시각 입력"
+        android:inputType="time"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_battery"
+        app:layout_constraintEnd_toStartOf="@+id/btn_battery"
+        app:layout_constraintStart_toEndOf="@+id/appointmentText"
+        app:layout_constraintTop_toTopOf="@+id/appointmentText" />
+
+    <EditText
+        android:id="@+id/et_appointmentSpace"
+        android:layout_width="115dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="150dp"
+        android:ems="10"
+        android:hint=" : 목적지 입력"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="@+id/currentText"
+        app:layout_constraintEnd_toStartOf="@+id/btn_confirm"
+        app:layout_constraintStart_toEndOf="@+id/appointmentSpaceText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_currenttime"
+        android:layout_width="128dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="136dp"
+        android:layout_marginBottom="50dp"
+        android:ems="10"
+        android:inputType="time"
+        app:layout_constraintBottom_toTopOf="@+id/btn_battery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/currentText"
+        app:layout_constraintTop_toTopOf="@+id/currentText" />
+
+    <TextView
+        android:id="@+id/appointmentText"
+        android:layout_width="102dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="48dp"
+        android:gravity="center"
+        android:text="도착희망\n시각"
+        android:textColor="#EF2D43"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutTmap"
+        app:layout_constraintEnd_toStartOf="@+id/et_appointmenttime"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentText" />
+
+    <TextView
+        android:id="@+id/appointmentSpaceText"
+        android:layout_width="105dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="목적지"
+        android:textColor="#9C27B0"
+        android:textSize="19sp"
+        app:layout_constraintBottom_toTopOf="@+id/currentText"
+        app:layout_constraintEnd_toStartOf="@+id/et_appointmentSpace"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTmap"
+        android:layout_width="386dp"
+        android:layout_height="375dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="28dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appointmentText"></LinearLayout>
+
+    <!--    &lt;!&ndash; A RecyclerView with some commonly used attributes &ndash;&gt;-->
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/my_target_view"-->
+    <!--        android:scrollbars="vertical"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"/>-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

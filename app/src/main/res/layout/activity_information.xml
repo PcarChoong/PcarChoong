@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".information">
+
+    <TextView
+        android:id="@+id/battext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="108dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="96dp"
+        android:gravity="center"
+        android:text="차량 정보 입력"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/fuel_eff_txt"
+        app:layout_constraintEnd_toStartOf="@+id/imageView3"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_modify_complete"
+        android:layout_width="187dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="129dp"
+        android:text="입력 완료"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/battery_num_txt" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginBottom="1dp"
+        android:src="@drawable/thunder"
+        app:layout_constraintBottom_toBottomOf="@+id/battext"
+        app:layout_constraintEnd_toStartOf="@+id/battext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/battext" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="37dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="96dp"
+        android:src="@drawable/thunder"
+        app:layout_constraintBottom_toTopOf="@+id/fuel_eff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/battext"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/battery_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="325dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="단위 : kwh"
+        android:inputType="number"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/battery_num_txt"
+        app:layout_constraintTop_toBottomOf="@+id/fuel_eff" />
+
+    <EditText
+        android:id="@+id/fuel_eff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="77dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="단위 : km/kWh"
+        android:inputType="number"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/battery_num"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fuel_eff_txt"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/fuel_eff_txt"
+        android:layout_width="96dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="43dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="70dp"
+        android:gravity="center"
+        android:text="연비"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/battery_num_txt"
+        app:layout_constraintEnd_toStartOf="@+id/fuel_eff"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/battext" />
+
+    <TextView
+        android:id="@+id/battery_num_txt"
+        android:layout_width="122dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="9dp"
+        android:layout_marginBottom="145dp"
+        android:gravity="center"
+        android:text="배터리 잔량"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_modify_complete"
+        app:layout_constraintEnd_toStartOf="@+id/battery_num"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fuel_eff_txt" />
+</androidx.constraintlayout.widget.ConstraintLayout>
