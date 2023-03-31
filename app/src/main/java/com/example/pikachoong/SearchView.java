@@ -28,6 +28,8 @@ public class SearchView extends AppCompatActivity implements RecyclerViewAdapter
     private Runnable workRunnable;
     protected ArrayList<Poi> p;
     private final long DELAY = 500;
+    protected Intent intent;
+    protected information infor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +40,12 @@ public class SearchView extends AppCompatActivity implements RecyclerViewAdapter
     }
 
     @Override
-    public int getappointment_space(ArrayList<SearchEntity> itemLists,int position){
-        String appointment_space = itemLists.get(position).getTitle();
-        Intent intent1 = new Intent(SearchView.this, MainActivity.class);
-        intent1.putExtra("space",appointment_space); // "space" 키 값을 이용해 입력한 appointment_space 값을 intent로 이동시킨다.
-        startActivity(intent1);
-        return position;
+    public void getappointment_space(ArrayList<SearchEntity> itemLists,int position){
+            String appointment_space = itemLists.get(position).getTitle();
+            intent = new Intent(SearchView.this, MainActivity.class);
+            intent.putExtra("space", appointment_space); // "space" 키 값을 이용해 입력한 appointment_space 값을 intent로 이동시킨다.
+            startActivity(intent);
+
     }
 
     private void layoutInit(){

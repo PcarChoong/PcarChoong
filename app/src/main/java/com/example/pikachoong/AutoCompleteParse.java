@@ -20,7 +20,7 @@ public class AutoCompleteParse extends AsyncTask<String, Void, ArrayList<SearchE
     protected ArrayList<SearchEntity> mListData;
     protected RecyclerViewAdapter mAdapter;
 
-    protected ArrayList<Poi> p;
+    public ArrayList<Poi> p;
     private String fullAddr;
     protected double[] ed_lat;
     protected double[] ed_lon;

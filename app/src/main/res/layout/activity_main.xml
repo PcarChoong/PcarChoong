@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!--            <android.widget.LinearLayout-->
-    <!--                android:id="@+id/linearLayout"-->
-    <!--                android:layout_width="100dp"-->
-    <!--                android:layout_height="100dp"-->
-    <!--                android:orientation="vertical"-->
-    <!--                tools:layout_editor_absoluteX="137dp"-->
-    <!--                tools:layout_editor_absoluteY="159dp">-->
-
-    <!--            </android.widget.LinearLayout>-->
 
     <Button
         android:id="@+id/btn_battery"

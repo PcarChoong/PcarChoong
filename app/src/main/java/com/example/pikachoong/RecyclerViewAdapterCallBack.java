@@ -8,5 +8,5 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public interface RecyclerViewAdapterCallBack {
-    int getappointment_space(ArrayList<SearchEntity> itemLists, int position);
+    void getappointment_space(ArrayList<SearchEntity> itemLists, int position);
 }

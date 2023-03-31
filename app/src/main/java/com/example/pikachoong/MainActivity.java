@@ -174,14 +174,6 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
         });
     }
 
-    public void Movability(){
-        Intent intent = getIntent(); // 전달한 intent객체를 받음
-        String current_remain = intent.getStringExtra("battery");//"battery"키 값으로 데이터를 받음
-        String fuel_eff_str = intent.getStringExtra("F");
-        int fuel_eff_num = Integer.parseInt(fuel_eff_str);
-        int remain = Integer.parseInt(current_remain); // 배터리 잔량 수치(단위 : %)
-        //Judgement(fuel_eff_num,remain); // 현재 배터리 잔량으로 이동거리를 이동할 수 있는지 판단
-    }
 
 
 

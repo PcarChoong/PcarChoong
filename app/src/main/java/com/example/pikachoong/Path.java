@@ -41,7 +41,7 @@ public class Path extends AsyncTask<TMapPoint, Void, Double> {
         catch(Exception e){
             e.printStackTrace();
         }
-        return tMapPolyLine.getDistance();
+        return tMapPolyLine.getDistance(); // 거리 반환 (단위 : m)
     }
 
 }
