@@ -1,0 +1,19 @@
+안드로이드 스튜디오 git 올리기 command
+
+git init
+git add .
+git commit -m '커밋 메시지'
+git remote add origin 원격저장소URL
+(참고 : git remote -v명령어를 입력하면 원격저장소에 잘 연결되어있는지 확인 가능)
+git push -u origin master
+
+한국 공공데이터 포털(충전소 OPEN API)
+인증키
+
+Encoding
+UhKarman7DgUATAB4EIurxt5ch40fMqqTm8MWt3CX%2Bna3%2BYttYFbg%2FayLNVgMB6%2FCXEITNP%2B36laZcUqY5wYDA%3D%3D
+
+Decoding
+UhKarman7DgUATAB4EIurxt5ch40fMqqTm8MWt3CX+na3+YttYFbg/ayLNVgMB6/CXEITNP+36laZcUqY5wYDA==
+
+(아마 코딩 작업할 때는 인코딩 값 사용하시면 될듯요^)
