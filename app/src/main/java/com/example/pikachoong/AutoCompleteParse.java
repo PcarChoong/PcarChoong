@@ -22,8 +22,6 @@ public class AutoCompleteParse extends AsyncTask<String, Void, ArrayList<SearchE
 
     public ArrayList<Poi> p;
     private String fullAddr;
-    protected double[] ed_lat;
-    protected double[] ed_lon;
     public AutoCompleteParse(RecyclerViewAdapter adapter){
         this.mAdapter = adapter;
         mListData = new ArrayList<SearchEntity>();

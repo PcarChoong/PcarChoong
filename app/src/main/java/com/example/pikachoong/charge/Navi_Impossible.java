@@ -30,11 +30,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+
 
 public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback{
 

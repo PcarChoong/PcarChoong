@@ -6,7 +6,5 @@ public class TMapSearchInfo {
     public SearchPoiInfo getSearchPoiInfo(){
         return searchPoiInfo;
     }
-    public void setSearchPoiInfo(SearchPoiInfo searchPoiInfo){
-        this.searchPoiInfo = searchPoiInfo;
-    }
+    public void setSearchPoiInfo(SearchPoiInfo searchPoiInfo){this.searchPoiInfo = searchPoiInfo;}
 }
