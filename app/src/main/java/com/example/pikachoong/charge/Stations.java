@@ -1,7 +1,8 @@
 package com.example.pikachoong.charge;
 
 import com.example.pikachoong.Navigate;
-import com.example.pikachoong.charge_entities.StationEntity_Res;
+import com.example.pikachoong.autosearch.Poi;
+//import com.example.pikachoong.charge_entities.StationEntity_Res;
 import com.skt.Tmap.TMapPoint;
 
 import java.io.BufferedReader;
@@ -16,23 +17,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
+//import javax.xml.bind.JAXBContext;
+//import javax.xml.bind.Unmarshaller;
 
 public class Stations {
     private final String DataKey= "UhKarman7DgUATAB4EIurxt5ch40fMqqTm8MWt3CX%2Bna3%2BYttYFbg%2FayLNVgMB6%2FCXEITNP%2B36laZcUqY5wYDA%3D%3D";
     private StringBuilder urlBuilder;
     private String station_addr;
     private Navigate navi;
-    private StationEntity_Res stations;
-    private ArrayList<TMapPoint> ch_tMapPoints;
+    private ArrayList<Poi> p;
+//    private StationEntity_Res stations;
+    private ArrayList<TMapPoint> ch_tMapPoints = new ArrayList<>();
 
     public ArrayList<TMapPoint> Chargestation() throws IOException {
         navi = new Navigate();
+        navi.setNavigate(p);
 
-        for(int i=0;i<navi.p.size();i++){
-            if(navi.mark.equals(navi.p.get(i).getName())){ 
-                station_addr = navi.p.get(i).getUpperAddrName()+navi.p.get(i).getMiddleAddrName();//입력한 장소명의 주소를 받아옴
+        for(int i=0;i<this.p.size();i++){
+            if(navi.mark.equals(this.p.get(i).getName())){
+                station_addr = this.p.get(i).getUpperAddrName()+this.p.get(i).getMiddleAddrName();//입력한 장소명의 주소를 받아옴
             }
         }
 
@@ -68,18 +71,16 @@ public class Stations {
 
         String xml = sb.toString();
 
-        //Map<String, StationEntity_Res> result = new HashMap<>();
-        try{
-            JAXBContext jaxbContext = JAXBContext.newInstance(StationEntity_Res.class); //jaxb context 생성
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller(); //Unmarshaller객체 생성(xml -> java 객체 변환 과정 수행)
-            stations = (StationEntity_Res) unmarshaller.unmarshal(new StringReader(xml)); // unmarshaller 작업 수행 및 응답정보를 객체에 저장
+//        Map<String, StationEntity_Res> result = new HashMap<>();
+//        try{
+//            JAXBContext jaxbContext = JAXBContext.newInstance(StationEntity_Res.class); //jaxb context 생성
+//            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller(); //Unmarshaller객체 생성(xml -> java 객체 변환 과정 수행)
+//            stations = (StationEntity_Res) unmarshaller.unmarshal(new StringReader(xml)); // unmarshaller 작업 수행 및 응답정보를 객체에 저장
+//            result.put("response", stations);
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
 
-
-            //result.put("response", stations);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        return ;
+        return ch_tMapPoints;
     }
 }

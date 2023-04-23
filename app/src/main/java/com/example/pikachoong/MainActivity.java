@@ -7,11 +7,14 @@ import android.location.Location;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.example.pikachoong.charge.Navi_Impossible;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapView;
@@ -25,16 +28,11 @@ import android.widget.EditText;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-
 public class MainActivity extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback{
 
     private EditText et_appointmentTime;
     private EditText et_appointmentSpace;
-    private EditText et_currentTime;
+    protected EditText et_currentTime;
     private LinearLayout linearLayoutTmap;
     long systemTime = System.currentTimeMillis();
     SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.KOREA);
@@ -52,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
 
     private TMapData tmapdata;
     protected String space;
+    private String t;
     @Override
     public void onLocationChange(Location location){
         if (m_bTrackingMode) {
@@ -167,9 +166,10 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Navigate.class);
-                intent.putExtra("Mark", space);
-                startActivity(intent);
+                Intent intent_space = new Intent(MainActivity.this, Navigate.class);
+                intent_space.putExtra("Mark", space);
+                startActivity(intent_space);
+
             }
         });
     }

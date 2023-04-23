@@ -62,7 +62,7 @@ public class AutoCompleteParse extends AsyncTask<String, Void, ArrayList<SearchE
 
             TMapSearchInfo searchPoiInfo = new Gson().fromJson(line, TMapSearchInfo.class);
             //읽어들인 라인을 json표현으로 변환
-            // Gson() : java객체를 Json표현으로 변환하기 위한 객체
+
 
             p = searchPoiInfo.getSearchPoiInfo().getPois().getPoi();
             for(int i = 0;i<p.size();i++){

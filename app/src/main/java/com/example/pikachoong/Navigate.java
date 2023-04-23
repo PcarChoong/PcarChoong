@@ -8,16 +8,22 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.pikachoong.autosearch.Poi;
+import com.example.pikachoong.charge.Navi_Impossible;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
@@ -39,6 +45,7 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
     protected double distance; // 이동 거리
 
     private TextView txt;
+    private Button btn_move_navi;
 
     private boolean m_bTrackingMode = true;
     private LinearLayout LinearLayoutTmap;
@@ -63,8 +70,8 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-//          judgement_algor();
-
+            Move();
+            
         }
     }
     @Override
@@ -73,6 +80,7 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
         setContentView(R.layout.activity_navigate);
 
         Map(); // 지도 표시
+
     }
 
 
@@ -109,7 +117,7 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
        parse = new AutoCompleteParse(recyclerViewAdapter); //AutoCompleteParse 객체 생성
        mListData = parse.execute(mark).get(); // 입력한 장소에 대한 전체 SearchEntity 객체 리스트를 반환 및 저장
        this.p = parse.p; // execute함수로 인해 설정된 poi리스트 값을 저장
-       // mark와 일치하는 장소의 좌표 객체를 반환
+
 
       for(int i=0;i<mListData.size();i++){
            if(mark.equals(p.get(i).getName())){ // 입력한 장소명과 같은 리스트 요소를 찾았다면 그 장소의 위도, 경도값을 목표지점으로 설정
@@ -130,19 +138,38 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
         tmapview.setZoomLevel(12);
     }
 
-    public void judgement_algor(){
-        Intent intent = getIntent();
-        ArrayList<String> infor = (ArrayList<String>) intent.getSerializableExtra("information");// 객체를 받아옴
-//        fuel_eff = Float.parseFloat(infor.get(0));//"F"키 값으로 데이터(연비)를 받음
-//        current_remain = Float.parseFloat(infor.get(1));//"battery"값으로 데이터(배터리 잔량)을 받음
-
-        need_battery = (float)distance/fuel_eff;
-//        if((current_remain - need_battery)<=0){
-//            Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);// 현재 배터리 잔량으로 이동 불가능한 경우
-//            startActivity(intent1);
-//        }else if((current_remain - need_battery)>0){
-//            Intent intent1 = new Intent(Navigate.this, Navi_Possible.class);// 현재 배터리 잔량으로 이동 가능한 경우
-//            startActivity(intent1);
-//        }
+    public void setNavigate(ArrayList<Poi> p){
+        p = this.p;
     }
+
+
+
+//    public void judgement_algor(){
+//        Intent intent = getIntent();
+//        ArrayList<String> infor = (ArrayList<String>) intent.getSerializableExtra("information");// 객체를 받아옴
+////        fuel_eff = Float.parseFloat(infor.get(0));//"F"키 값으로 데이터(연비)를 받음
+////        current_remain = Float.parseFloat(infor.get(1));//"battery"값으로 데이터(배터리 잔량)을 받음
+//
+//        need_battery = (float)distance/fuel_eff;
+////        if((current_remain - need_battery)<=0){
+////            Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);// 현재 배터리 잔량으로 이동 불가능한 경우
+////            startActivity(intent1);
+////        }else if((current_remain - need_battery)>0){
+////            Intent intent1 = new Intent(Navigate.this, Navi_Possible.class);// 현재 배터리 잔량으로 이동 가능한 경우
+////            startActivity(intent1);
+////        }
+//    }
+
+    public void Move(){
+        btn_move_navi = findViewById(R.id.btn_moveable);
+        btn_move_navi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Navigate.this, Navi_Impossible.class);
+                intent.putExtra("Mark", mark);
+                startActivity(intent); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
+            }
+        });
+    }
+
 }

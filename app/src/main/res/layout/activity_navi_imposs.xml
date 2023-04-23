@@ -6,28 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".charge.Navi_Impossible">
 
+    <LinearLayout
+        android:id="@+id/linearLayoutTmap2"
+        android:layout_width="395dp"
+        android:layout_height="400dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="121dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="140dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/imposs_text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="47dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="19dp"
         android:gravity="center"
         android:text="현재 배터리 잔량으로 목적지까지"
         android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/imposs_text2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="52dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imposs_text2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="88dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutTmap2"
         app:layout_constraintEnd_toStartOf="@+id/imposs_text1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -37,13 +55,29 @@
         android:id="@+id/imposs_text2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="51dp"
         android:gravity="center"
         android:text="이동할 수 없어요.."
+        android:textColor="#F44336"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:textColor="#F44336"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutTmap2"
         app:layout_constraintEnd_toEndOf="@+id/imposs_text1"
         app:layout_constraintTop_toBottomOf="@+id/imposs_text1" />
+
+    <TextView
+        android:id="@+id/PATH_time"
+        android:layout_width="394dp"
+        android:layout_height="193dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutTmap2" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,10 +30,10 @@ public class Path extends AsyncTask<TMapPoint, Void, Double> {
 
     @Override
     protected Double doInBackground(TMapPoint... tMapPoints){
-        TMapData tmapdata = new TMapData();
+         TMapData tmapData = new TMapData();
 
         try{
-            tMapPolyLine = tmapdata.findPathDataWithType(TMapData.TMapPathType.CAR_PATH,tMapPoints[0], tMapPoints[1]);
+            tMapPolyLine = tmapData.findPathDataWithType(TMapData.TMapPathType.CAR_PATH,tMapPoints[0], tMapPoints[1]);
             tMapPolyLine.setLineColor(Color.BLUE);
             tMapPolyLine.setLineWidth(5);
             tmapview.addTMapPolyLine("Line1", tMapPolyLine);
