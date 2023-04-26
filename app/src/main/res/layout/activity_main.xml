@@ -13,7 +13,7 @@
         android:layout_height="70dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="40dp"
-        android:text="배터리\n잔량입력"
+        android:text="차량정보\n입력"
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutTmap"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/et_appointmenttime"

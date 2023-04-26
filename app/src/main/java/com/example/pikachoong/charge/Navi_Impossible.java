@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.pikachoong.AutoCompleteParse;
 import com.example.pikachoong.Path;
+import com.example.pikachoong.Path_PassList;
 import com.example.pikachoong.R;
 import com.example.pikachoong.RecyclerViewAdapter;
 import com.example.pikachoong.SearchEntity;
@@ -96,6 +97,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
     private String line;
 
     private int time;
+    private ArrayList<TMapPoint> tp;
     public void onLocationChange(Location location){
         //onLocationChange함수는 일반 메서드보다 호출 순서가 조금 느림 -> onLocationChange를 먼저 수행한 후
         // navigate()함수를 실행하도록 하여야 변수 값의 혼동이 없을 듯.
@@ -173,23 +175,37 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             }
         }
 
-        Path path = new Path(getApplicationContext(), tmapview);
-        distance = path.execute(tMapPointStart, tMapPointEnd).get();//출발지부터 목적지까지 Polyline을 그리고, 그려진 Polyline의 길이를 반환
+        tp = new ArrayList<>();
+        tp.add(new TMapPoint(37.551882, 127.087532)); // 임시로 설정한 값임...
 
-        TMapMarkerItem endMarkerItem = new TMapMarkerItem();
+        Path_PassList path_pl = new Path_PassList(getApplicationContext(), tmapview, tp);
+        distance = path_pl.execute(tMapPointStart, tMapPointEnd).get();//출발지부터 목적지까지(충전소를 경유하는) Polyline을 그리고, 그려진 Polyline의 길이를 반환
+
+        TMapMarkerItem endMarkerItem = new TMapMarkerItem(); // 목적지를 표시할 마커
+        TMapMarkerItem passlistItem = new TMapMarkerItem(); // 경유지를 표시할 마커
+
         TMapPoint tpoint = new TMapPoint(tMapPointEnd.getLatitude(),tMapPointEnd.getLongitude());
+        TMapPoint PLpoint = new TMapPoint(37.551882, 127.087532); // 임시로 설정한 값임...
+
         Bitmap bmp = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.marker); // 마커 이미지객체 생성
+        Bitmap bmp2 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.charge); // 마커 이미지객체 생성
+
         endMarkerItem.setTMapPoint(tpoint); // 마커에 point지정
         endMarkerItem.setVisible(TMapMarkerItem.VISIBLE); // 마커가 보일 수 있도록 함
         endMarkerItem.setIcon(bmp); // 아이콘은 미리 지정해둔 이미지로 설정
         tmapview.addMarkerItem("endMarker", endMarkerItem);
+
+        passlistItem.setTMapPoint(PLpoint); // 경유하는 충전소 위치에 마커를 표시
+        passlistItem.setVisible(TMapMarkerItem.VISIBLE);
+        passlistItem.setIcon(bmp2);
+        tmapview.addMarkerItem("PLmarker", passlistItem);
         tmapview.setZoomLevel(12);
     }
 
     public int PathTime() throws IOException, ParserConfigurationException, SAXException, JSONException { // 경유지를 경유하는 경로에 대한 예상 소요시간을 반환(위의 navigate()함수를 수행한 다음에 수행되어야 함)
         tmapdata = new TMapData();
         TMapAddressInfo addressInfor = tmapdata.reverseGeocoding(st_lat,st_lon, "A00" ); // 현재 위치의 좌표를 바탕으로 주소를 알아냄(리버스 지오코딩)
-        String encodeStWord = URLEncoder.encode("개롱역", "UTF-8");
+        String encodeStWord = URLEncoder.encode("잠실역", "UTF-8");
 
         LocalDate now1 = null;
         LocalTime now2 = null;
@@ -215,7 +231,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
                 "\"uncetaintyA\":1,\"uncetaintyAP\":1,\"carType\":0," +
                 "\"startName\":\""+ encodeStWord+"\"," +
                 "\"endName\":\""+URLEncoder.encode(p.get(n).getName(), "UTF-8")+"\"," +
-                "\"passList\":\"127.0794,37.5573\"," +
+                "\"passList\":\"127.087532,37.551882\"," +
                 "\"gpsInfoList\":\"126.939376564495,37.470947057194365,"+formattedNowT+",20,50,5,2,12,1_126.939376564495,37.470947057194365,"+formattedNowT+",20,50,5,2,12,1\"," +
                 "\"detailPosFlag\":\"2\",\"resCoordType\":\"WGS84GEO\",\"sort\":\"index\"}");
 
@@ -243,16 +259,8 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             JSONObject prop = feat.getJSONObject(0).getJSONObject("properties");
             time = prop.getInt("totalTime");
         }
-        methodT(line);
-//        TMapCarPath tmapCarPath = new Gson().fromJson(line, TMapCarPath.class);
-//        if(tmapCarPath!=NULL){
-//        ppts = tmapCarPath.getFeatures();
-//            for (int i = 0; i < ppts.getProperties().size(); i++) {
-//                if ("S".equals(ppts.getProperties().get(i).getPointType())) { // pointType =='S'인 경우에만 TotalTime(총 소요시간)을 응답 받음
-//                    time = ppts.getProperties().get(i).getTotalTime();
-//                }
-//            }
-//        }
+        methodT(time+"");
+
         return 1;
     }
 
