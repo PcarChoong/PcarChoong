@@ -66,18 +66,15 @@
         app:layout_constraintEnd_toEndOf="@+id/imposs_text1"
         app:layout_constraintTop_toBottomOf="@+id/imposs_text1" />
 
-    <TextView
-        android:id="@+id/PATH_time"
-        android:layout_width="394dp"
-        android:layout_height="193dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:text="TextView"
-        android:textSize="20sp"
+    <Spinner
+        android:id="@+id/cs_spinner"
+        android:layout_width="371dp"
+        android:layout_height="85dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutTmap2" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.911" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,9 +10,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pikachoong.AutoCompleteParse;
 import com.example.pikachoong.Path;
@@ -63,6 +68,7 @@ import java.util.concurrent.ExecutionException;
 import javax.xml.parsers.ParserConfigurationException;
 
 
+
 public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback{
 
     private static final String mApiKey = "EmlFC6GmPM1tAkPEonCFP8qWzAE5UaJQ1FseySqt";
@@ -96,9 +102,29 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
     private String line;
 
     private int time;
+
+    String [] list;
+
     public void onLocationChange(Location location){
         //onLocationChange함수는 일반 메서드보다 호출 순서가 조금 느림 -> onLocationChange를 먼저 수행한 후
         // navigate()함수를 실행하도록 하여야 변수 값의 혼동이 없을 듯.
+
+        Stations find=new Stations();
+
+            new Thread(() -> {
+
+                try {
+                   list= find.get_charge_station();
+                    System.out.println("spinner->"+list[0]);
+                    System.out.println("spinner->"+list[1]);
+                    System.out.println("spinner->"+list[2]);
+                }
+                catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
+
+
         if (m_bTrackingMode) {
             tmapview.setLocationPoint(location.getLongitude(), location.getLatitude());
             st_lat = location.getLatitude(); // 현재 위치 위도값 얻어옴
@@ -127,8 +153,8 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navi_imposs);
-
         Map();
+
     }
 
     public void Map(){
@@ -243,7 +269,6 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             JSONObject prop = feat.getJSONObject(0).getJSONObject("properties");
             time = prop.getInt("totalTime");
         }
-        methodT(line);
 //        TMapCarPath tmapCarPath = new Gson().fromJson(line, TMapCarPath.class);
 //        if(tmapCarPath!=NULL){
 //        ppts = tmapCarPath.getFeatures();
@@ -256,8 +281,5 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
         return 1;
     }
 
-    public void methodT(String line){
-        txt = findViewById(R.id.PATH_time);
-        txt.setText(line);
-    }
+
 }
