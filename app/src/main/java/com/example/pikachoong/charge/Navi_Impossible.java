@@ -130,12 +130,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navi_imposs);
         Map();
-        Handler mHandler = new Handler(Looper.getMainLooper());
-        Spinner spinner=findViewById(R.id.cs_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        mHandler.postDelayed(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -146,28 +141,23 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-                System.out.println("spinner->" + list[0]);
-                System.out.println("spinner->" + list[1]);
-                System.out.println("spinner->" + list[2]);
-
-
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        Toast.makeText(getApplicationContext(),list[i],Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-                });
             }
-        }, 0);
+        });
+        thread.start();
+        System.out.println("Thread가 종료될때까지 기다립니다.");
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Thread가 종료되었습니다.");
+        System.out.println("spinner->" + list[0]);
+        System.out.println("spinner->" + list[1]);
+        System.out.println("spinner->" + list[2]);
 
-        System.out.println("xml파싱 스레드 종료");
 
     }
+
 
 
 

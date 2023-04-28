@@ -42,7 +42,7 @@ import android.widget.EditText;
 class charging_station{
     String statName,stationID,address, location, lat, lng, usetime, stat, output;
 }
-public class Stations extends AppCompatActivity {
+public class Stations {
     charging_station cs;
     ArrayList<charging_station> cs_list = new ArrayList<charging_station> ();
     String [] cs_items= new String[100];
