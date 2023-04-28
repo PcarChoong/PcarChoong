@@ -45,7 +45,7 @@ class charging_station{
 public class Stations {
     charging_station cs;
     ArrayList<charging_station> cs_list = new ArrayList<charging_station> ();
-    String [] cs_items= new String[100];
+    String [] cs_items= new String[10];
     @SuppressLint("RestrictedApi")
 
 
