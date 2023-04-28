@@ -1,23 +1,22 @@
 package com.example.pikachoong.charge;
 
-import static org.json.JSONObject.NULL;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pikachoong.AutoCompleteParse;
 import com.example.pikachoong.Path;
@@ -25,10 +24,6 @@ import com.example.pikachoong.R;
 import com.example.pikachoong.RecyclerViewAdapter;
 import com.example.pikachoong.SearchEntity;
 import com.example.pikachoong.autosearch.Poi;
-import com.example.pikachoong.responseimposs.Features;
-import com.example.pikachoong.responseimposs.Properties;
-import com.example.pikachoong.responseimposs.TMapCarPath;
-import com.google.gson.Gson;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapMarkerItem;
@@ -45,27 +40,19 @@ import com.squareup.okhttp.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.ParserConfigurationException;
+
+
 
 
 
@@ -105,27 +92,16 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
 
     String [] list;
 
+
+
     public void onLocationChange(Location location){
         //onLocationChange함수는 일반 메서드보다 호출 순서가 조금 느림 -> onLocationChange를 먼저 수행한 후
         // navigate()함수를 실행하도록 하여야 변수 값의 혼동이 없을 듯.
 
-        Stations find=new Stations();
-
-            new Thread(() -> {
-
-                try {
-                   list= find.get_charge_station();
-                    System.out.println("spinner->"+list[0]);
-                    System.out.println("spinner->"+list[1]);
-                    System.out.println("spinner->"+list[2]);
-                }
-                catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }).start();
-
 
         if (m_bTrackingMode) {
+
+
             tmapview.setLocationPoint(location.getLongitude(), location.getLatitude());
             st_lat = location.getLatitude(); // 현재 위치 위도값 얻어옴
             st_lon = location.getLongitude(); // 현재 위치 경도값 얻어옴
@@ -154,8 +130,46 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navi_imposs);
         Map();
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        Spinner spinner=findViewById(R.id.cs_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                System.out.println("xml파싱 스레드 시작");
+                Stations find = new Stations();
+                try {
+                    list = find.get_charge_station();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                System.out.println("spinner->" + list[0]);
+                System.out.println("spinner->" + list[1]);
+                System.out.println("spinner->" + list[2]);
+
+
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        Toast.makeText(getApplicationContext(),list[i],Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+        }, 0);
+
+        System.out.println("xml파싱 스레드 종료");
 
     }
+
+
 
     public void Map(){
         mContext = this;
