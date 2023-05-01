@@ -45,11 +45,10 @@ class charging_station{
 public class Stations {
     charging_station cs;
     ArrayList<charging_station> cs_list = new ArrayList<charging_station> ();
-    String [] cs_items= new String[10];
     @SuppressLint("RestrictedApi")
 
 
-    public String[] get_charge_station() throws IOException {
+    public ArrayList<charging_station> get_charge_station() throws IOException {
 
         ///검색해서 따온 XML 파싱 시작할거
 
@@ -198,15 +197,6 @@ public class Stations {
         }
 
 
-        for(int i=0;i<10;i++)
-        {
-            charging_station cs;
-            cs=cs_list.get(i);
-            cs_items[i]=cs.statName+"->"+cs.address;
-
-        }
-
-
-     return cs_items;
+        return cs_list;
     }
 }

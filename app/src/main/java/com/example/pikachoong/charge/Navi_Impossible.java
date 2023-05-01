@@ -90,9 +90,9 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
 
     private int time;
 
-    String [] list;
-
-
+    ArrayList<charging_station> cs_list;
+    String [] list = new String [10];
+    charging_station temp;
 
     public void onLocationChange(Location location){
         //onLocationChange함수는 일반 메서드보다 호출 순서가 조금 느림 -> onLocationChange를 먼저 수행한 후
@@ -137,7 +137,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
                 System.out.println("xml파싱 스레드 시작");
                 Stations find = new Stations();
                 try {
-                    list = find.get_charge_station();
+                    cs_list = find.get_charge_station();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -151,19 +151,28 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             throw new RuntimeException(e);
         }
         System.out.println("Thread가 종료되었습니다.");
-        System.out.println("spinner->" + list[0]);
-        System.out.println("spinner->" + list[1]);
-        System.out.println("spinner->" + list[2]);
+
+        for(int i=0;i<10;i++)
+        {
+            temp=cs_list.get(i);
+            list[i]=temp.statName+"->"+temp.address;
+        }
+
 
         Spinner spinner=findViewById(R.id.cs_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        for(int i=0;i<10;i++)
+        {
+            System.out.println(list[i]);
+        }
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(),list[i],Toast.LENGTH_SHORT).show();
+                temp = cs_list.get(i);
+                Toast.makeText(getApplicationContext(), temp.lat + "/" + temp.lng, Toast.LENGTH_LONG).show();
             }
 
             @Override
