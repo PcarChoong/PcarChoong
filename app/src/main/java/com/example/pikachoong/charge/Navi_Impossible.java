@@ -90,9 +90,9 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
 
     private int time;
 
-    ArrayList<charging_station> cs_list;
-    String [] list = new String [10];
-    charging_station temp;
+    ArrayList<charging_station> cs_list; //cs_list가 서울 전체 충전소 정보들 담은 arraylist
+    String [] list = new String [100];//사용자한테 보여줄 배열
+    charging_station temp; //레퍼런스만 생성
 
     public void onLocationChange(Location location){
         //onLocationChange함수는 일반 메서드보다 호출 순서가 조금 느림 -> onLocationChange를 먼저 수행한 후
@@ -152,7 +152,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
         }
         System.out.println("Thread가 종료되었습니다.");
 
-        for(int i=0;i<10;i++)
+        for(int i=0;i<100;i++)
         {
             temp=cs_list.get(i);
             list[i]=temp.statName+"->"+temp.address;
@@ -160,19 +160,15 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
 
 
         Spinner spinner=findViewById(R.id.cs_spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);//spinner에 list 배열 추가
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        for(int i=0;i<10;i++)
-        {
-            System.out.println(list[i]);
-        }
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 temp = cs_list.get(i);
-                Toast.makeText(getApplicationContext(), temp.lat + "/" + temp.lng, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), temp.lat + "/" + temp.lng, Toast.LENGTH_LONG).show(); //출력 용
             }
 
             @Override
