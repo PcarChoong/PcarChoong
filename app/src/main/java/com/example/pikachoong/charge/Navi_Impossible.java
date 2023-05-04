@@ -31,12 +31,12 @@ import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 import com.skt.Tmap.address_info.TMapAddressInfo;
-import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
+//import com.squareup.okhttp.Callback;
+//import com.squareup.okhttp.MediaType;
+//import com.squareup.okhttp.OkHttpClient;
+//import com.squareup.okhttp.Request;
+//import com.squareup.okhttp.RequestBody;
+//import com.squareup.okhttp.Response;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -223,35 +223,35 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
 
         }
 
-        OkHttpClient client = new OkHttpClient();
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"tollgateFareOption\":16,\"roadType\":32,\"directionOption\":1,\"endX\":"+tg_lon+",\"endY\":"+tg_lat+"," +
-                "\"endRpFlag\":\""+p.get(n).getRpFlag()+"\",\"reqCoordType\":\"WGS84GEO\",\"startX\":"+st_lon+"," +
-                "\"startY\":"+st_lat+",\"gpsTime\":\""+formattedNowD+formattedNowT+"\",\"speed\":10,\"uncetaintyP\":1," +
-                "\"uncetaintyA\":1,\"uncetaintyAP\":1,\"carType\":0," +
-                "\"startName\":\""+ encodeStWord+"\"," +
-                "\"endName\":\""+URLEncoder.encode(p.get(n).getName(), "UTF-8")+"\"," +
-                "\"passList\":\"127.087532,37.551882\"," +
-                "\"gpsInfoList\":\"126.939376564495,37.470947057194365,"+formattedNowT+",20,50,5,2,12,1_126.939376564495,37.470947057194365,"+formattedNowT+",20,50,5,2,12,1\"," +
-                "\"detailPosFlag\":\"2\",\"resCoordType\":\"WGS84GEO\",\"sort\":\"index\"}");
-
-
-        Request request = new Request.Builder()
-                .url("https://apis.openapi.sk.com/tmap/routes?version=1")
-                .post(body)
-                .addHeader("accept", "application/json")
-                .addHeader("content-type", "application/json")
-                .addHeader("appKey", mApiKey)
-                .build();
-        
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {}
-            @Override
-            public void onResponse(Response response) throws IOException {
-              line = response.body().string();
-            }
-        }); // 응답값들을 비동기 처리함(실시간으로 예상 소요시간을 받아와야 하기 때문)
+//        OkHttpClient client = new OkHttpClient();
+//        MediaType mediaType = MediaType.parse("application/json");
+//        RequestBody body = RequestBody.create(mediaType, "{\"tollgateFareOption\":16,\"roadType\":32,\"directionOption\":1,\"endX\":"+tg_lon+",\"endY\":"+tg_lat+"," +
+//                "\"endRpFlag\":\""+p.get(n).getRpFlag()+"\",\"reqCoordType\":\"WGS84GEO\",\"startX\":"+st_lon+"," +
+//                "\"startY\":"+st_lat+",\"gpsTime\":\""+formattedNowD+formattedNowT+"\",\"speed\":10,\"uncetaintyP\":1," +
+//                "\"uncetaintyA\":1,\"uncetaintyAP\":1,\"carType\":0," +
+//                "\"startName\":\""+ encodeStWord+"\"," +
+//                "\"endName\":\""+URLEncoder.encode(p.get(n).getName(), "UTF-8")+"\"," +
+//                "\"passList\":\"127.087532,37.551882\"," +
+//                "\"gpsInfoList\":\"126.939376564495,37.470947057194365,"+formattedNowT+",20,50,5,2,12,1_126.939376564495,37.470947057194365,"+formattedNowT+",20,50,5,2,12,1\"," +
+//                "\"detailPosFlag\":\"2\",\"resCoordType\":\"WGS84GEO\",\"sort\":\"index\"}");
+//
+//
+//        Request request = new Request.Builder()
+//                .url("https://apis.openapi.sk.com/tmap/routes?version=1")
+//                .post(body)
+//                .addHeader("accept", "application/json")
+//                .addHeader("content-type", "application/json")
+//                .addHeader("appKey", mApiKey)
+//                .build();
+//
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Request request, IOException e) {}
+//            @Override
+//            public void onResponse(Response response) throws IOException {
+//              line = response.body().string();
+//            }
+//        }); // 응답값들을 비동기 처리함(실시간으로 예상 소요시간을 받아와야 하기 때문)
         System.out.println("Hello   :   "+line);
         if(line !=null) {
             JSONObject json = new JSONObject(line);

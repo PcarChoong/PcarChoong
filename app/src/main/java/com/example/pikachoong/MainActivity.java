@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.example.pikachoong.charge.Navi_Impossible;
+//import com.example.pikachoong.charge.Navi_Impossible;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapView;
@@ -173,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
             }
         });
     }
-
 
 
 

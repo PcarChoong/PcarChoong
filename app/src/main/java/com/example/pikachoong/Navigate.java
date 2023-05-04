@@ -14,7 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.pikachoong.autosearch.Poi;
+//import com.example.pikachoong.charge.Navi_Impossible;
 import com.example.pikachoong.charge.Navi_Impossible;
+import com.example.pikachoong.charge.Navi_Possible;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapMarkerItem;
@@ -40,8 +42,8 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
     private TMapData tmapdata;
     private Context mContext = null;
     private float current_remain; // 현재 남아있는 배터리 잔량
-    private float need_battery;//도착 후 남아있을 배터리 잔량
-    private float fuel_eff;
+    private float remain_battery;//도착 후 남아있을 배터리 잔량
+    private float fuel_eff; //차량의 연비
     protected double distance; // 이동 거리
 
     private TextView txt;
@@ -70,7 +72,7 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            Move();
+ //           Move();
             
         }
     }
@@ -144,32 +146,44 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
 
 
 
-//    public void judgement_algor(){
-//        Intent intent = getIntent();
-//        ArrayList<String> infor = (ArrayList<String>) intent.getSerializableExtra("information");// 객체를 받아옴
-////        fuel_eff = Float.parseFloat(infor.get(0));//"F"키 값으로 데이터(연비)를 받음
-////        current_remain = Float.parseFloat(infor.get(1));//"battery"값으로 데이터(배터리 잔량)을 받음
-//
-//        need_battery = (float)distance/fuel_eff;
-////        if((current_remain - need_battery)<=0){
-////            Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);// 현재 배터리 잔량으로 이동 불가능한 경우
-////            startActivity(intent1);
-////        }else if((current_remain - need_battery)>0){
-////            Intent intent1 = new Intent(Navigate.this, Navi_Possible.class);// 현재 배터리 잔량으로 이동 가능한 경우
-////            startActivity(intent1);
-////        }
-//    }
+    public void judgement_algor(){
+        Intent intent = getIntent();
+        ArrayList<String> infor = (ArrayList<String>) intent.getSerializableExtra("information");// 객체를 받아옴
+        fuel_eff = Float.parseFloat(infor.get(0));//"F"키 값으로 데이터(연비)를 받음
+        current_remain = Float.parseFloat(infor.get(1));//"battery"값으로 데이터(배터리 잔량)을 받음
 
-    public void Move(){
-        btn_move_navi = findViewById(R.id.btn_moveable);
-        btn_move_navi.setOnClickListener(new View.OnClickListener() {
+        remain_battery = current_remain - (float)distance*fuel_eff;
+
+        btn_move_navi.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Navigate.this, Navi_Impossible.class);
-                intent.putExtra("Mark", mark);
-                startActivity(intent); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
+                if(remain_battery>0){
+                    Intent intent = new Intent(Navigate.this , Navi_Possible.class);
+                    startActivity(intent);
+                }
+                else{
+                    Intent intent = new Intent(Navigate.this , Navi_Impossible.class);
+                    startActivity(intent);
+                }
             }
-        });
+        }));
+//        if((current_remain - need_battery)<=0){
+//            Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);// 현재 배터리 잔량으로 이동 불가능한 경우
+//            startActivity(intent1);
+//        }else if((current_remain - need_battery)>0){
+//
     }
+
+//    public void Move(){
+//        btn_move_navi = findViewById(R.id.btn_moveable);
+//        btn_move_navi.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(Navigate.this, Navi_Impossible.class);
+//                intent.putExtra("Mark", mark);
+//                startActivity(intent); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
+//            }
+//        });
+//    }
 
 }
