@@ -168,6 +168,8 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 temp = cs_list.get(i);
+
+
                 Toast.makeText(getApplicationContext(), temp.lat + "/" + temp.lng, Toast.LENGTH_LONG).show(); //출력 용
             }
 
