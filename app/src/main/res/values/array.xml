@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="car_array">
-        <item>BMW i8</item>
-        <item>테슬라 모델3</item>
-        <item>테슬라 모델S</item>
-        <item>포르쉐 타이칸 터보</item>
-        <item>현대 아이오닉</item>
+        <item>현대 코나 일렉트릭(1세대)</item>
+        <item>현대 아이오닉 6(1세대)</item>
+        <item>니로 EV(2세대)</item>
+        <item>쉐보레 볼트EV(1세대)</item>
+        <item>르노삼성 sm3 z.e(2세대)</item>
     </string-array>
 </resources>

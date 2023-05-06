@@ -86,7 +86,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
     private String line;
 
     ArrayList<charging_station> cs_list; //cs_list가 서울 전체 충전소 정보들 담은 arraylist
-    String [] list = new String [100];//사용자한테 보여줄 배열
+    String [] list = new String [10];//사용자한테 보여줄 배열
     charging_station temp; //레퍼런스만 생성
     ArrayList<Integer> t = new ArrayList<>();
 
@@ -163,8 +163,6 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 temp = cs_list.get(i);
-
-
                 Toast.makeText(getApplicationContext(), temp.lat + "/" + temp.lng, Toast.LENGTH_LONG).show(); //출력 용
             }
 
@@ -264,7 +262,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             formattedNowT = now2.format(formatterT);
 
         }
-    for(int i=0;i<cs_list.size();i++) { // 서울 전체의 충전소 정보를 받아온 arraylist배열의 크기 만큼 반복문 시행 -> 각 충전소를 경유할 때의 이동 소요 시간 출력
+    for(int i=0;i<list.length;i++) { // 서울 전체의 충전소 정보를 받아온 arraylist배열의 크기 만큼 반복문 시행 -> 각 충전소를 경유할 때의 이동 소요 시간 출력
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"endX\":" + tg_lon + ",\"endY\":" + tg_lat + "," +
