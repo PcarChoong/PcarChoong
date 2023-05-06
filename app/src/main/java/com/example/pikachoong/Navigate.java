@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.pikachoong.autosearch.Poi;
 import com.example.pikachoong.charge.Navi_Impossible;
+import com.example.pikachoong.charge.Navi_Possible;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapMarkerItem;
@@ -113,7 +114,8 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
         //입력한 약속장소를 받아옴
 
        tMapPointStart = new TMapPoint(st_lat, st_lon); // 출발지 좌표 입력(onLocationChange에서 설정한 위도, 경도 값)
-       recyclerViewAdapter = new RecyclerViewAdapter(); 
+
+       recyclerViewAdapter = new RecyclerViewAdapter();
        parse = new AutoCompleteParse(recyclerViewAdapter); //AutoCompleteParse 객체 생성
        mListData = parse.execute(mark).get(); // 입력한 장소에 대한 전체 SearchEntity 객체 리스트를 반환 및 저장
        this.p = parse.p; // execute함수로 인해 설정된 poi리스트 값을 저장
@@ -165,9 +167,15 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
         btn_move_navi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Navigate.this, Navi_Impossible.class);
-                intent.putExtra("Mark", mark);
-                startActivity(intent); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
+                if(true) { // 판단 알고리즘 완성하면 수정할 것!!
+                    Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);
+                    intent1.putExtra("Mark", mark);
+                    startActivity(intent1); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
+                }else{
+                    Intent intent2 = new Intent(Navigate.this, Navi_Possible.class);
+                    intent2.putExtra("Mark", mark);
+                    startActivity(intent2); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
+                }
             }
         });
     }

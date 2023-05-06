@@ -8,14 +8,14 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutTmap2"
-        android:layout_width="395dp"
-        android:layout_height="400dp"
+        android:layout_width="393dp"
+        android:layout_height="362dp"
         android:layout_marginStart="13dp"
         android:layout_marginTop="121dp"
         android:layout_marginEnd="13dp"
-        android:layout_marginBottom="140dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+
+        app:layout_constraintBottom_toTopOf="@+id/cs_spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -27,14 +27,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="37dp"
-        android:layout_marginEnd="31dp"
         android:layout_marginBottom="19dp"
         android:gravity="center"
         android:text="현재 배터리 잔량으로 목적지까지"
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/imposs_text2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintHorizontal_bias="0.66"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -42,9 +42,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="18dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="110dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutTmap2"
         app:layout_constraintEnd_toStartOf="@+id/imposs_text1"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,18 +66,16 @@
         app:layout_constraintEnd_toEndOf="@+id/imposs_text1"
         app:layout_constraintTop_toBottomOf="@+id/imposs_text1" />
 
-    <TextView
-        android:id="@+id/PATH_time"
-        android:layout_width="394dp"
-        android:layout_height="193dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:text="TextView"
-        android:textSize="20sp"
+    <Spinner
+        android:id="@+id/cs_spinner"
+        android:layout_width="389dp"
+        android:layout_height="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.363"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutTmap2" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.906" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

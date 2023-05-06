@@ -1,4 +1,4 @@
-package com.example.pikachoong;
+package com.example.pikachoong.charge;
 
 import android.content.Context;
 import android.graphics.Color;

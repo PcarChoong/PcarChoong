@@ -28,7 +28,7 @@ public class SearchView extends AppCompatActivity implements RecyclerViewAdapter
     private Runnable workRunnable;
     protected ArrayList<Poi> p;
     private final long DELAY = 500;
-    protected Intent intent;
+    public Intent intent;
     protected information infor;
 
     @Override

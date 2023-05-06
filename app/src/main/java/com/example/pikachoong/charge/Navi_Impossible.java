@@ -1,7 +1,5 @@
 package com.example.pikachoong.charge;
 
-import static org.json.JSONObject.NULL;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -10,21 +8,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pikachoong.AutoCompleteParse;
 import com.example.pikachoong.Path;
-import com.example.pikachoong.Path_PassList;
 import com.example.pikachoong.R;
 import com.example.pikachoong.RecyclerViewAdapter;
 import com.example.pikachoong.SearchEntity;
 import com.example.pikachoong.autosearch.Poi;
-import com.example.pikachoong.responseimposs.Features;
-import com.example.pikachoong.responseimposs.Properties;
-import com.example.pikachoong.responseimposs.TMapCarPath;
-import com.google.gson.Gson;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapGpsManager;
 import com.skt.Tmap.TMapMarkerItem;
@@ -41,24 +38,16 @@ import com.squareup.okhttp.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -96,8 +85,13 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
     private String address;
     private String line;
 
+    ArrayList<charging_station> cs_list; //cs_list가 서울 전체 충전소 정보들 담은 arraylist
+    String [] list = new String [100];//사용자한테 보여줄 배열
+    charging_station temp; //레퍼런스만 생성
+    ArrayList<Integer> t = new ArrayList<>();
+
     private int time;
-    private ArrayList<TMapPoint> tp;
+    private ArrayList<TMapPoint> tp = new ArrayList<>();
     public void onLocationChange(Location location){
         //onLocationChange함수는 일반 메서드보다 호출 순서가 조금 느림 -> onLocationChange를 먼저 수행한 후
         // navigate()함수를 실행하도록 하여야 변수 값의 혼동이 없을 듯.
@@ -113,7 +107,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-//          judgement_algor();
+
 
             tg_lat = Double.parseDouble(p.get(n).getNoorLat()); // 입력한 목적지의 위도값
             tg_lon = Double.parseDouble(p.get(n).getNoorLon()); // 입력한 목적지의 경도값
@@ -131,6 +125,54 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
         setContentView(R.layout.activity_navi_imposs);
 
         Map();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                System.out.println("xml파싱 스레드 시작");
+                Stations find = new Stations();
+                try {
+                    cs_list = find.get_charge_station();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        thread.start();
+        System.out.println("Thread가 종료될때까지 기다립니다.");
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Thread가 종료되었습니다.");
+
+        for(int i=0;i<10;i++)
+        {
+            temp = cs_list.get(i);
+            list[i]=temp.statName+"->"+temp.address;
+        }
+
+
+        Spinner spinner=findViewById(R.id.cs_spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,list);//spinner에 list 배열 추가
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                temp = cs_list.get(i);
+
+
+                Toast.makeText(getApplicationContext(), temp.lat + "/" + temp.lng, Toast.LENGTH_LONG).show(); //출력 용
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     public void Map(){
@@ -175,8 +217,8 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             }
         }
 
-        tp = new ArrayList<>();
-        tp.add(new TMapPoint(37.551882, 127.087532)); // 임시로 설정한 값임...
+//        tp = new ArrayList<>();
+//        tp.add(new TMapPoint(37.551882, 127.087532)); // 임시로 설정한 값임...
 
         Path_PassList path_pl = new Path_PassList(getApplicationContext(), tmapview, tp);
         distance = path_pl.execute(tMapPointStart, tMapPointEnd).get();//출발지부터 목적지까지(충전소를 경유하는) Polyline을 그리고, 그려진 Polyline의 길이를 반환
@@ -203,9 +245,9 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
     }
 
     public int PathTime() throws IOException, ParserConfigurationException, SAXException, JSONException { // 경유지를 경유하는 경로에 대한 예상 소요시간을 반환(위의 navigate()함수를 수행한 다음에 수행되어야 함)
-        tmapdata = new TMapData();
-        TMapAddressInfo addressInfor = tmapdata.reverseGeocoding(st_lat,st_lon, "A00" ); // 현재 위치의 좌표를 바탕으로 주소를 알아냄(리버스 지오코딩)
-        String encodeStWord = URLEncoder.encode("잠실역", "UTF-8");
+//        tmapdata = new TMapData();
+//        TMapAddressInfo addressInfor = tmapdata.reverseGeocoding(st_lat,st_lon, "A00" ); // 현재 위치의 좌표를 바탕으로 주소를 알아냄(리버스 지오코딩)
+//        String encodeStWord = URLEncoder.encode("잠실역", "UTF-8");
 
         LocalDate now1 = null;
         LocalTime now2 = null;
@@ -222,18 +264,15 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             formattedNowT = now2.format(formatterT);
 
         }
-
+    for(int i=0;i<cs_list.size();i++) { // 서울 전체의 충전소 정보를 받아온 arraylist배열의 크기 만큼 반복문 시행 -> 각 충전소를 경유할 때의 이동 소요 시간 출력
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"tollgateFareOption\":16,\"roadType\":32,\"directionOption\":1,\"endX\":"+tg_lon+",\"endY\":"+tg_lat+"," +
-                "\"endRpFlag\":\""+p.get(n).getRpFlag()+"\",\"reqCoordType\":\"WGS84GEO\",\"startX\":"+st_lon+"," +
-                "\"startY\":"+st_lat+",\"gpsTime\":\""+formattedNowD+formattedNowT+"\",\"speed\":10,\"uncetaintyP\":1," +
+        RequestBody body = RequestBody.create(mediaType, "{\"endX\":" + tg_lon + ",\"endY\":" + tg_lat + "," +
+                "\",\"reqCoordType\":\"WGS84GEO\",\"startX\":" + st_lon + "," +
+                "\"startY\":" + st_lat + ",\"gpsTime\":\"" + formattedNowD + formattedNowT + "\",\"speed\":10,\"uncetaintyP\":1," +
                 "\"uncetaintyA\":1,\"uncetaintyAP\":1,\"carType\":0," +
-                "\"startName\":\""+ encodeStWord+"\"," +
-                "\"endName\":\""+URLEncoder.encode(p.get(n).getName(), "UTF-8")+"\"," +
-                "\"passList\":\"127.087532,37.551882\"," +
-                "\"gpsInfoList\":\"126.939376564495,37.470947057194365,"+formattedNowT+",20,50,5,2,12,1_126.939376564495,37.470947057194365,"+formattedNowT+",20,50,5,2,12,1\"," +
-                "\"detailPosFlag\":\"2\",\"resCoordType\":\"WGS84GEO\",\"sort\":\"index\"}");
+                "\"passList\":\"" + cs_list.get(i).lng + "," + cs_list.get(i).lat + "\"," +
+                "\"sort\":\"index\"}");
 
 
         Request request = new Request.Builder()
@@ -243,29 +282,35 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
                 .addHeader("content-type", "application/json")
                 .addHeader("appKey", mApiKey)
                 .build();
-        
+
+
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Request request, IOException e) {}
+            public void onFailure(Request request, IOException e) {
+            }
+
             @Override
             public void onResponse(Response response) throws IOException {
-              line = response.body().string();
+                line = response.body().string();
             }
         }); // 응답값들을 비동기 처리함(실시간으로 예상 소요시간을 받아와야 하기 때문)
-        System.out.println("Hello   :   "+line);
-        if(line !=null) {
-            JSONObject json = new JSONObject(line);
-            JSONArray feat = json.getJSONArray("features");
-            JSONObject prop = feat.getJSONObject(0).getJSONObject("properties");
-            time = prop.getInt("totalTime");
+        if (line != null) {
+            JSONObject json = new JSONObject(line); // open API를 통해 JSON형태의 값을 받음
+            JSONArray feat = json.getJSONArray("features"); // features 객체 배열값을 받아옴
+            JSONObject prop = feat.getJSONObject(0).getJSONObject("properties"); // features배열의 properties라는 객체를 받아옴
+            t.add(prop.getInt("totalTime")); // 총 소요 시간을 integer배열에 저장
+            System.out.println(prop.getInt("totalTime")+"");
         }
-        methodT(time+"");
-
+    }
+    Collections.sort(t); // 받아온 시간값 정렬
+    for(int i=0;i<t.size();i++) {
+        System.out.println(t.get(i)+" sss\n");
+    }
         return 1;
     }
 
-    public void methodT(String line){
-        txt = findViewById(R.id.PATH_time);
-        txt.setText(line);
-    }
+//    public void methodT(String line){ //임시로 시간값 받으려고 쓴 메서드
+//        txt = findViewById(R.id.PATH_time);
+//        txt.setText(line);
+//    }
 }

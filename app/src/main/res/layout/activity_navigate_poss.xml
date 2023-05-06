@@ -37,13 +37,40 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="4dp"
         android:gravity="center"
-        android:text="이동할 수 할 수 있어요!"
+        android:text="이동할 수 있어요!"
         android:textColor="#3665F4"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/imposs_text"
         app:layout_constraintTop_toBottomOf="@+id/imposs_text" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTmap3"
+        android:layout_width="392dp"
+        android:layout_height="443dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="172dp"
+        android:layout_marginEnd="13dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/navigate_btn"
+        android:layout_width="189dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="117dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="106dp"
+        android:layout_marginBottom="21dp"
+        android:text="경로 안내"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutTmap3" />
 </androidx.constraintlayout.widget.ConstraintLayout>
