@@ -145,23 +145,6 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
     }
 
 
-
-//    public void judgement_algor(){
-//        Intent intent = getIntent();
-//        ArrayList<String> infor = (ArrayList<String>) intent.getSerializableExtra("information");// 객체를 받아옴
-////        fuel_eff = Float.parseFloat(infor.get(0));//"F"키 값으로 데이터(연비)를 받음
-////        current_remain = Float.parseFloat(infor.get(1));//"battery"값으로 데이터(배터리 잔량)을 받음
-//
-//        need_battery = (float)distance/fuel_eff;
-////        if((current_remain - need_battery)<=0){
-////            Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);// 현재 배터리 잔량으로 이동 불가능한 경우
-////            startActivity(intent1);
-////        }else if((current_remain - need_battery)>0){
-////            Intent intent1 = new Intent(Navigate.this, Navi_Possible.class);// 현재 배터리 잔량으로 이동 가능한 경우
-////            startActivity(intent1);
-////        }
-//    }
-
     public void Move(){
         btn_move_navi = findViewById(R.id.btn_moveable);
         btn_move_navi.setOnClickListener(new View.OnClickListener() {

@@ -29,7 +29,6 @@ public class SearchView extends AppCompatActivity implements RecyclerViewAdapter
     protected ArrayList<Poi> p;
     private final long DELAY = 500;
     public Intent intent;
-    protected information infor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

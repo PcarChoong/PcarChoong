@@ -176,18 +176,9 @@ public class Navi_Possible extends AppCompatActivity implements TMapGpsManager.o
             public void onClick(View view) {
 
                 TMapTapi tMapTapi = new TMapTapi(cxt);
-//                HashMap pathInfo = new HashMap();
-//                pathInfo.put("rGoName", mark); // 목적지 명칭
-//                pathInfo.put("rGoY", tMapPointEnd.getLatitude()+"");
-//                pathInfo.put("rGoX", tMapPointEnd.getLongitude()+"");
-//                pathInfo.put("rStName", "");
-//                pathInfo.put("rStX", st_lat); // 출발지 위도
-//                pathInfo.put("rStY", st_lon); // 출발지 경도
-//                tMapTapi.invokeRoute(pathInfo);
+
                 tMapTapi.invokeNavigate("", (float)tMapPointEnd.getLongitude(), (float)tMapPointEnd.getLatitude(), 0, true);
-                //tMapTapi.invokeNavigate(목적지 , 목적지의 x 좌표 (경도), 목적지의 y 좌표 (위도), POI ID , 목적지 도착시 T Map 자동종료 여부);
-                //목적지명이 없을 시 "" 입력가능하며 목적지 좌표는 필수 입력값 입니다.
-                //POI ID 내용이 없을 시 0 으로 입력 가능하며 목적지 도착시 T Map 자동종료 여부는 true:자동종료, false:종료안함 입니다.
+
                 System.out.println(tMapTapi.isTmapApplicationInstalled()+"  sss");
             }
         });

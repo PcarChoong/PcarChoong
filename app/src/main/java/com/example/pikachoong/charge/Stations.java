@@ -62,7 +62,7 @@ public class Stations {
 
 
         try {
-            URL url= new URL("https://apis.data.go.kr/B552584/EvCharger/getChargerInfo?serviceKey=UhKarman7DgUATAB4EIurxt5ch40fMqqTm8MWt3CX%2Bna3%2BYttYFbg%2FayLNVgMB6%2FCXEITNP%2B36laZcUqY5wYDA%3D%3D&pageNo=1&numOfRows=200&zcode=11");
+            URL url= new URL("https://apis.data.go.kr/B552584/EvCharger/getChargerInfo?serviceKey=UhKarman7DgUATAB4EIurxt5ch40fMqqTm8MWt3CX%2Bna3%2BYttYFbg%2FayLNVgMB6%2FCXEITNP%2B36laZcUqY5wYDA%3D%3D&pageNo=1&numOfRows=200&zscode=11350&zscode=11710");
 
             XmlPullParserFactory parserCreator = XmlPullParserFactory.newInstance();
             XmlPullParser parser = parserCreator.newPullParser();
@@ -81,16 +81,16 @@ public class Stations {
                             cs= new charging_station();
                         }
 
-                        if(parser.getName().equals("statNm"))
+                        if(parser.getName().equals("statNm")) // 충전소 명
                         {
                             instatNm= true;
                         }
-                        if(parser.getName().equals("statId"))
+                        if(parser.getName().equals("statId")) // 충전소 ID
                         {
                             instatId= true;
                         }
 
-                        if(parser.getName().equals("addr"))
+                        if(parser.getName().equals("addr")) // 충전기 주소
                         {
                             inaddr= true;
                         }
@@ -98,23 +98,23 @@ public class Stations {
                         {
                             inlocation= true;
                         }
-                        if(parser.getName().equals("lat"))
+                        if(parser.getName().equals("lat")) // 충전소 위도
                         {
                             inlat= true;
                         }
-                        if(parser.getName().equals("lng"))
+                        if(parser.getName().equals("lng"))// 충전소 경도
                         {
                             inlng= true;
                         }
-                        if(parser.getName().equals("useTime"))
+                        if(parser.getName().equals("useTime")) // 충전기 이용가능 시간
                         {
                             inuseTime= true;
                         }
-                        if(parser.getName().equals("stat"))
+                        if(parser.getName().equals("stat"))// 충전기상태(1: 통신이상, 2: 충전대기,3: 충전중, 4: 운영중지,5: 점검중, 9: 상태미확인)
                         {
                             instat= true;
                         }
-                        if(parser.getName().equals("output"))
+                        if(parser.getName().equals("output")) // 충전기 공급 전력
                         {
                             inoutput= true;
                         }
@@ -170,13 +170,13 @@ public class Stations {
                         if(instat)
                         {
                             stat=parser.getText();
-                            cs.stat=stat;
+                            cs.stat=stat; //
                             instat=false;
                         }
                         if(inoutput)
                         {
                             output=parser.getText();
-                            cs.output=output;
+                            cs.output=output; // 충전소 공급 전력
                             inoutput=false;
                         }
                         break;

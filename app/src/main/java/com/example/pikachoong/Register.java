@@ -24,7 +24,12 @@ public class Register extends AppCompatActivity {
 
     private EditText edit_id,et_pw,et_name,et_age;
     private Button btn_register;
-
+    String C;
+    float Cona_batt; // 현대 코나 일렉트릭(1세대) 배터리 용량
+    float ionic_batt; // 현대 아이오닉 6(1세대) 배터리 용량
+    float niro_batt; // 니로 EV(2세대) 배터리 용량
+    float shav_batt; // 쉐보레 볼트 EV(1세대) 배터리 용량
+    float sm3_batt; // 르노삼성 SM3 배터리 용량
     Spinner spinner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,7 @@ public class Register extends AppCompatActivity {
                 String userName =et_name.getText().toString();
                 int userAge=Integer.parseInt(et_age.getText().toString());
                 String carName=spinner.getSelectedItem().toString();
-
+                C = carName;
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -76,6 +81,17 @@ public class Register extends AppCompatActivity {
                         }
                     }
                 };
+                if(carName.equals("현대 코나 일렉트릭(1세대)")){
+                    Cona_batt = 77.4f; // 코나 : 77.4kWh용량을 가짐
+                }else if(carName.equals("현대 아이오닉6(1세대)")){
+                    ionic_batt = 77.4f; // 아이오닉6 : 77.4kWh용량을 가짐
+                }else if(carName.equals("니로 EV(2세대)")){
+                    niro_batt = 64;
+                }else if(carName.equals("쉐보레 볼트 EV (1세대)")){
+                    shav_batt = 65;
+                }else if(carName.equals("르노삼성 sm3 z.e(2세대)")){
+                    sm3_batt = 35.9f;
+                }
                 RegisterRequest registerRequest = new RegisterRequest(userID,userPW,userName,userAge,carName,responseListener);
                 RequestQueue queue = Volley.newRequestQueue(Register.this);
                 queue.add(registerRequest);
@@ -83,4 +99,11 @@ public class Register extends AppCompatActivity {
 
         });
     }
+    public float getCona_batt(){return Cona_batt;}
+    public float getIonic_batt(){return ionic_batt;}
+    public float getNiro_batt(){return niro_batt;}
+    public float getShav_batt(){return shav_batt;}
+    public float getSm3_batt(){return sm3_batt;}
+    public String getC(){return C;}
+
 }

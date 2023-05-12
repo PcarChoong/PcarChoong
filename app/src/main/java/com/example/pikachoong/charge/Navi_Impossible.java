@@ -20,6 +20,7 @@ import com.example.pikachoong.AutoCompleteParse;
 import com.example.pikachoong.Path;
 import com.example.pikachoong.R;
 import com.example.pikachoong.RecyclerViewAdapter;
+import com.example.pikachoong.Register;
 import com.example.pikachoong.SearchEntity;
 import com.example.pikachoong.autosearch.Poi;
 import com.skt.Tmap.TMapData;
@@ -48,9 +49,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import javax.xml.parsers.ParserConfigurationException;
+
+import kotlin.text.RegexOption;
 
 
 public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager.onLocationChangedCallback{
@@ -84,11 +91,17 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
     private Path path;
     private String address;
     private String line;
-
-    ArrayList<charging_station> cs_list; //cs_list가 서울 전체 충전소 정보들 담은 arraylist
-    String [] list = new String [100];//사용자한테 보여줄 배열
+    private String C;
+    ArrayList<charging_station> cs_list; //송파구, 노원구 전체 충전소 정보들 담은 arraylist
+    ArrayList<charging_station> slow_cs = new ArrayList<>(); // 완속 충전기 arrayList
+    Map<charging_station, Integer> slow_map = new HashMap<charging_station, Integer>();
+    ArrayList<charging_station> fast_cs = new ArrayList<>(); // 급속 충전기 arrayList
+    Map<charging_station, Integer> fast_map = new HashMap<charging_station, Integer>();
+    String [] list = new String [10];//사용자한테 보여줄 배열
     charging_station temp; //레퍼런스만 생성
-    ArrayList<Integer> t = new ArrayList<>();
+    ArrayList<Integer> fast_t = new ArrayList<>();
+    ArrayList<Integer> slow_t = new ArrayList<>();
+
 
     private int time;
     private ArrayList<TMapPoint> tp = new ArrayList<>();
@@ -124,6 +137,9 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navi_imposs);
 
+        Register register = new Register();
+        C = register.getC();
+
         Map();
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -150,6 +166,11 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
         for(int i=0;i<10;i++)
         {
             temp = cs_list.get(i);
+            if(Integer.parseInt(temp.output)>=50){ // 충전기 공급 전력이 50kW이상인 경우 급속 충전기로 분류
+                fast_cs.add(temp); // 급속 충전기 배열에 추가 (a개)
+            }else{ // 50kW미만일 경우 완속 충전기로 분류
+                slow_cs.add(temp); // 완속 충전기 배열에 추가 (10-a개)
+            }
             list[i]=temp.statName+"->"+temp.address;
         }
 
@@ -244,7 +265,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
         tmapview.setZoomLevel(12);
     }
 
-    public int PathTime() throws IOException, ParserConfigurationException, SAXException, JSONException { // 경유지를 경유하는 경로에 대한 예상 소요시간을 반환(위의 navigate()함수를 수행한 다음에 수행되어야 함)
+    public int PathTime() throws IOException, ParserConfigurationException, SAXException, JSONException { // 경유지를 경유하는 경로에 대한 예상 이동 소요시간을 반환(위의 navigate()함수를 수행한 다음에 수행되어야 함)
 //        tmapdata = new TMapData();
 //        TMapAddressInfo addressInfor = tmapdata.reverseGeocoding(st_lat,st_lon, "A00" ); // 현재 위치의 좌표를 바탕으로 주소를 알아냄(리버스 지오코딩)
 //        String encodeStWord = URLEncoder.encode("잠실역", "UTF-8");
@@ -262,16 +283,16 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             // 포맷 적용
             formattedNowD = now1.format(formatterD);
             formattedNowT = now2.format(formatterT);
-
         }
-    for(int i=0;i<cs_list.size();i++) { // 서울 전체의 충전소 정보를 받아온 arraylist배열의 크기 만큼 반복문 시행 -> 각 충전소를 경유할 때의 이동 소요 시간 출력
+
+    for(int i=0;i<fast_cs.size();i++) { // 송파구, 노원구 충전소 정보를 받아온 급속 arraylist배열의 크기 만큼 반복문 시행 -> 각 충전소를 경유할 때의 이동 소요 시간 출력
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"endX\":" + tg_lon + ",\"endY\":" + tg_lat + "," +
                 "\",\"reqCoordType\":\"WGS84GEO\",\"startX\":" + st_lon + "," +
                 "\"startY\":" + st_lat + ",\"gpsTime\":\"" + formattedNowD + formattedNowT + "\",\"speed\":10,\"uncetaintyP\":1," +
                 "\"uncetaintyA\":1,\"uncetaintyAP\":1,\"carType\":0," +
-                "\"passList\":\"" + cs_list.get(i).lng + "," + cs_list.get(i).lat + "\"," +
+                "\"passList\":\"" + fast_cs.get(i).lng + "," + fast_cs.get(i).lat + "\"," +
                 "\"sort\":\"index\"}");
 
 
@@ -288,7 +309,6 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             @Override
             public void onFailure(Request request, IOException e) {
             }
-
             @Override
             public void onResponse(Response response) throws IOException {
                 line = response.body().string();
@@ -298,19 +318,85 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             JSONObject json = new JSONObject(line); // open API를 통해 JSON형태의 값을 받음
             JSONArray feat = json.getJSONArray("features"); // features 객체 배열값을 받아옴
             JSONObject prop = feat.getJSONObject(0).getJSONObject("properties"); // features배열의 properties라는 객체를 받아옴
-            t.add(prop.getInt("totalTime")); // 총 소요 시간을 integer배열에 저장
-            System.out.println(prop.getInt("totalTime")+"");
+            fast_t.add(prop.getInt("totalTime")); // 총 소요 시간을 integer배열에 저장
+            fast_map.put(fast_cs.get(i), fast_t.get(i)+Charging_Time(fast_cs.get(i),C,i)); // <충전소 객체, 충전소를 경유하여 이동하는데 걸리는 총 소요 시간>
+           // System.out.println(prop.getInt("totalTime")+"");
         }
     }
-    Collections.sort(t); // 받아온 시간값 정렬
-    for(int i=0;i<t.size();i++) {
-        System.out.println(t.get(i)+" sss\n");
-    }
+
+    for(int i=0;i<slow_cs.size();i++) { // 송파구, 노원구 충전소 정보를 받아온 완속 arraylist배열의 크기 만큼 반복문 시행 -> 각 충전소를 경유할 때의 이동 소요 시간 출력
+        OkHttpClient client = new OkHttpClient();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"endX\":" + tg_lon + ",\"endY\":" + tg_lat + "," +
+                "\",\"reqCoordType\":\"WGS84GEO\",\"startX\":" + st_lon + "," +
+                "\"startY\":" + st_lat + ",\"gpsTime\":\"" + formattedNowD + formattedNowT + "\",\"speed\":10,\"uncetaintyP\":1," +
+                "\"uncetaintyA\":1,\"uncetaintyAP\":1,\"carType\":0," +
+                "\"passList\":\"" + slow_cs.get(i).lng + "," + slow_cs.get(i).lat + "\"," +
+                "\"sort\":\"index\"}");
+
+
+        Request request = new Request.Builder()
+                .url("https://apis.openapi.sk.com/tmap/routes?version=1")
+                .post(body)
+                .addHeader("accept", "application/json")
+                .addHeader("content-type", "application/json")
+                .addHeader("appKey", mApiKey)
+                .build();
+
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+                }
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    line = response.body().string();
+                }
+            }); // 응답값들을 비동기 처리함(실시간으로 예상 소요시간을 받아와야 하기 때문)
+            if (line != null) {
+                JSONObject json = new JSONObject(line); // open API를 통해 JSON형태의 값을 받음
+                JSONArray feat = json.getJSONArray("features"); // features 객체 배열값을 받아옴
+                JSONObject prop = feat.getJSONObject(0).getJSONObject("properties"); // features배열의 properties라는 객체를 받아옴
+                slow_t.add(prop.getInt("totalTime")); // 총 소요 시간을 integer배열에 저장
+                slow_map.put(slow_cs.get(i), slow_t.get(i)+Charging_Time(slow_cs.get(i),C,i));
+                // System.out.println(prop.getInt("totalTime")+"");
+            }
+        }
+        List<Map.Entry<charging_station, Integer>> fast_tm_entryList = new LinkedList<>(fast_map.entrySet());
+        fast_tm_entryList.sort(Map.Entry.comparingByValue()); // Map.Entry의 comparingByvalue를 이용하여 fast_map의 요소들을 value기준으로 오름차순 정렬
+
+        List<Map.Entry<charging_station, Integer>> slow_tm_entryList = new LinkedList<>(slow_map.entrySet());
+        slow_tm_entryList.sort(Map.Entry.comparingByValue()); // Map.Entry의 comparingByvalue를 이용하여 fast_map의 요소들을 value기준으로 오름차순 정렬
         return 1;
     }
 
-//    public void methodT(String line){ //임시로 시간값 받으려고 쓴 메서드
-//        txt = findViewById(R.id.PATH_time);
-//        txt.setText(line);
-//    }
+    int Charging_Time(charging_station cs,String C, int i){ // 충전시간 산출 함수
+        Register reg = new Register();
+        if(Integer.parseInt(cs.output)>=50) { // 급속일 때 충전시간
+            if (C.equals("현대 코나 일렉트릭(1세대)")) {
+                //return (int)((reg.getCona_batt() - 배터리 잔량값)/(Integer.parseInt(cs.output))); //이런 방식으로 기입
+            } else if (C.equals("현대 아이오닉6(1세대)")) {
+
+            } else if (C.equals("니로 EV(2세대)")) {
+
+            } else if (C.equals("쉐보레 볼트 EV (1세대)")) {
+
+            } else if (C.equals("르노삼성 sm3 z.e(2세대)")) {
+
+            }
+        }else{ // 완속일 때 충전시간
+            if (C.equals("현대 코나 일렉트릭(1세대)")) {
+                //return (int)((reg.getCona_batt() - 배터리 잔량값)/(Integer.parseInt(cs.output))); //이런 방식으로 기입
+            } else if (C.equals("현대 아이오닉6(1세대)")) {
+
+            } else if (C.equals("니로 EV(2세대)")) {
+
+            } else if (C.equals("쉐보레 볼트 EV (1세대)")) {
+
+            } else if (C.equals("르노삼성 sm3 z.e(2세대)")) {
+
+            }
+        }
+    }
+
 }
