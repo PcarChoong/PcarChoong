@@ -76,7 +76,7 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
- //           Move();
+            Move();
             
         }
     }
@@ -149,80 +149,35 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
         p = this.p;
     }
 
-<<<<<<< HEAD
-    public void Move(){
+    public void Move() {
         Intent intent = getIntent();
         fuel = intent.getStringExtra("fuel");
         battery = intent.getStringExtra("battery");
         //infor[0] -> 연비
         //infor[1] -> 배터리 잔량
-        batt_remain = Double.parseDouble(battery)*1000.0 - (double)(distance/Double.parseDouble(fuel)); // batt_remain : distance만큼의 거리를 이동하는데 필요한 배터리 용량
-        if(batt_remain > 0)
-        {
+        batt_remain = Double.parseDouble(battery) * 1000.0 - (double) (distance / Double.parseDouble(fuel)); // batt_remain : distance만큼의 거리를 이동하는데 필요한 배터리 용량
+        if (batt_remain > 0) {
             btn_move_navi = findViewById(R.id.btn_moveable);
             btn_move_navi.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                        Intent intent2 = new Intent(Navigate.this, Navi_Possible.class);
-                        intent2.putExtra("Mark", mark);
-                        startActivity(intent2); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
+                    Intent intent2 = new Intent(Navigate.this, Navi_Possible.class);
+                    intent2.putExtra("Mark", mark);
+                    startActivity(intent2); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
                 }
             });
         } //배터리 잔량이 0보다 크다면 목적지까지 이동 가능하다는 SubActivity로 이동
-        else if(batt_remain <= 0)
-        {
+        else if (batt_remain <= 0) {
             btn_move_navi = findViewById(R.id.btn_moveable);
             btn_move_navi.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                        Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);
-                        intent1.putExtra("Mark", mark);
-                        startActivity(intent1); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
+                    Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);
+                    intent1.putExtra("Mark", mark);
+                    startActivity(intent1); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
                 }
             });
         }
-
-
-
-    public void judgement_algor(){
-        Intent intent = getIntent();
-        ArrayList<String> infor = (ArrayList<String>) intent.getSerializableExtra("information");// 객체를 받아옴
-        fuel_eff = Float.parseFloat(infor.get(0));//"F"키 값으로 데이터(연비)를 받음
-        current_remain = Float.parseFloat(infor.get(1));//"battery"값으로 데이터(배터리 잔량)을 받음
-
-        remain_battery = current_remain - (float)distance*fuel_eff;
-
-        btn_move_navi.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(remain_battery>0){
-                    Intent intent = new Intent(Navigate.this , Navi_Possible.class);
-                    startActivity(intent);
-                }
-                else{
-                    Intent intent = new Intent(Navigate.this , Navi_Impossible.class);
-                    startActivity(intent);
-                }
-            }
-        }));
-//        if((current_remain - need_battery)<=0){
-//            Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);// 현재 배터리 잔량으로 이동 불가능한 경우
-//            startActivity(intent1);
-//        }else if((current_remain - need_battery)>0){
-//
->>>>>>> 6cb3c4fd49ac17872c94ae59aec6b03a7484a82d
     }
-
-//    public void Move(){
-//        btn_move_navi = findViewById(R.id.btn_moveable);
-//        btn_move_navi.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(Navigate.this, Navi_Impossible.class);
-//                intent.putExtra("Mark", mark);
-//                startActivity(intent); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
-//            }
-//        });
-//    }
 
 }
