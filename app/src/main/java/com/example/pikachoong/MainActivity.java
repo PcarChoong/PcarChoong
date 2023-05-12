@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
 
 
     private Button btn_remain;
-    private Button btn_confirm;
+//    private Button btn_confirm;
 
     private TMapData tmapdata;
     protected String space;
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
         
         setappointment_space(); // 약속 장소를 검색하고, 연관 리스트중 선택한 목적지를 텍스트로 나타내줌
 
-        StartNavigate(); // 목적지까지의 경로 나타내기
+//        StartNavigate(); // 목적지까지의 경로 나타내기
 
         Navigate n = new Navigate();
     }
@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, information.class);
                 //Intent(현재 액티비티(this), 이동할 액티비티(클래스))
+                intent.putExtra("mark", space);//"mark"라는 키값으로 목적지 명 전달
                 startActivity(intent); // activity 이동
             }//btn_batery를 클릭하면 수행할 동작
         });
@@ -161,18 +162,18 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
     }
 
 
-    public void StartNavigate(){
-        btn_confirm = findViewById(R.id.btn_confirm);
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent_space = new Intent(MainActivity.this, Navigate.class);
-                intent_space.putExtra("Mark", space);
-                startActivity(intent_space);
-
-            }
-        });
-    }
+//    public void StartNavigate(){
+//        btn_confirm = findViewById(R.id.btn_confirm);
+//        btn_confirm.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent_space = new Intent(MainActivity.this, Navigate.class);
+//                intent_space.putExtra("Mark", space);
+//                startActivity(intent_space);
+//
+//            }
+//        });
+//    }
 
 
 

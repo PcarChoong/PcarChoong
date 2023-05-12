@@ -50,10 +50,14 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
 
     private boolean m_bTrackingMode = true;
     private LinearLayout LinearLayoutTmap;
+    private double batt_remain;
     private ArrayList<SearchEntity> mListData;
     private AutoCompleteParse parse;
+    private String battery;
+    private String fuel;
     public ArrayList<Poi> p;
     public String mark;
+
 
     @Override
     public void onLocationChange(Location location){
@@ -144,40 +148,38 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
         p = this.p;
     }
 
-
-
-//    public void judgement_algor(){
-//        Intent intent = getIntent();
-//        ArrayList<String> infor = (ArrayList<String>) intent.getSerializableExtra("information");// 객체를 받아옴
-////        fuel_eff = Float.parseFloat(infor.get(0));//"F"키 값으로 데이터(연비)를 받음
-////        current_remain = Float.parseFloat(infor.get(1));//"battery"값으로 데이터(배터리 잔량)을 받음
-//
-//        need_battery = (float)distance/fuel_eff;
-////        if((current_remain - need_battery)<=0){
-////            Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);// 현재 배터리 잔량으로 이동 불가능한 경우
-////            startActivity(intent1);
-////        }else if((current_remain - need_battery)>0){
-////            Intent intent1 = new Intent(Navigate.this, Navi_Possible.class);// 현재 배터리 잔량으로 이동 가능한 경우
-////            startActivity(intent1);
-////        }
-//    }
-
     public void Move(){
-        btn_move_navi = findViewById(R.id.btn_moveable);
-        btn_move_navi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(true) { // 판단 알고리즘 완성하면 수정할 것!!
-                    Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);
-                    intent1.putExtra("Mark", mark);
-                    startActivity(intent1); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
-                }else{
-                    Intent intent2 = new Intent(Navigate.this, Navi_Possible.class);
-                    intent2.putExtra("Mark", mark);
-                    startActivity(intent2); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
+        Intent intent = getIntent();
+        fuel = intent.getStringExtra("fuel");
+        battery = intent.getStringExtra("battery");
+        //infor[0] -> 연비
+        //infor[1] -> 배터리 잔량
+        batt_remain = Double.parseDouble(battery)*1000.0 - (double)(distance/Double.parseDouble(fuel)); // batt_remain : distance만큼의 거리를 이동하는데 필요한 배터리 용량
+        if(batt_remain > 0)
+        {
+            btn_move_navi = findViewById(R.id.btn_moveable);
+            btn_move_navi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                        Intent intent2 = new Intent(Navigate.this, Navi_Possible.class);
+                        intent2.putExtra("Mark", mark);
+                        startActivity(intent2); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
                 }
-            }
-        });
+            });
+        } //배터리 잔량이 0보다 크다면 목적지까지 이동 가능하다는 SubActivity로 이동
+        else if(batt_remain <= 0)
+        {
+            btn_move_navi = findViewById(R.id.btn_moveable);
+            btn_move_navi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                        Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);
+                        intent1.putExtra("Mark", mark);
+                        startActivity(intent1); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
+                }
+            });
+        }
+
     }
 
 }

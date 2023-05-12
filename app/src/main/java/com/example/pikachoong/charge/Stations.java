@@ -24,7 +24,9 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import android.content.Intent;
@@ -67,7 +69,11 @@ public class Stations {
             XmlPullParserFactory parserCreator = XmlPullParserFactory.newInstance();
             XmlPullParser parser = parserCreator.newPullParser();
 
-            parser.setInput(url.openStream(), null);
+            URLConnection t_connection = url.openConnection();
+            t_connection.setReadTimeout(3000);
+            InputStream t_inputStream = t_connection.getInputStream();
+
+            parser.setInput(t_inputStream, null);
 
             int parserEvent= parser.getEventType();
 

@@ -16,13 +16,14 @@ import java.util.ArrayList;
 
 public class information extends AppCompatActivity {
 
-    protected Intent intent2;
+    private Intent intent2;
     private Button btn_modify_complete;
     private EditText battery_num;
     private EditText fuel_eff;
     private SearchView searchview;
     private String fuel;
     private String current_remain;
+    private String target_space;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,60 +34,44 @@ public class information extends AppCompatActivity {
     }
 
     public void MoveMain(){
+        Intent intent = getIntent();
         btn_modify_complete = findViewById(R.id.btn_modify_complete);
-//        battery_num = findViewById(R.id.battery_num);
-//        fuel_eff = findViewById(R.id.fuel_eff);
         btn_modify_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent2 = new Intent(information.this, MainActivity.class);
-                //Intent(현재 액티비티(this), 이동할 액티비티(클래스))
-                //이전과 동일한 액티비티로 돌아오기 위해서 같은 이전에 사용했던 intent객체를 사용
-
                 battery_num = findViewById(R.id.battery_num);
-                battery_num.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                    }
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                    }
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        current_remain = battery_num.getText().toString();
-                    }
-                });
+                current_remain = battery_num.getText().toString();
 
                 fuel_eff = findViewById(R.id.fuel_eff);
-                fuel_eff.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                    }
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        fuel = fuel_eff.getText().toString();
-                    }
-                });
+                fuel = fuel_eff.getText().toString();
+//                fuel_eff.addTextChangedListener(new TextWatcher() {
+//                    @Override
+//                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//                    }
+//                    @Override
+//                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//                    }
+//                    @Override
+//                    public void afterTextChanged(Editable editable) {
+//                        fuel = fuel_eff.getText().toString();
+//                    }
+//                });
 
 
 //                    String fuel = fuel_eff.getText().toString();
 //                    String current_remain = battery_num.getText().toString();
 
-                ArrayList<String> infor = new ArrayList<>();
-                infor.add(fuel);
-                infor.add(current_remain);
-                //intent2 = new Intent(information.this, Navigate.class);
-                intent2.putExtra("information", infor);
+               // ArrayList<String> infor = new ArrayList<>();
+               // infor.add(fuel);
+               // infor.add(current_remain);
+                intent2 = new Intent(information.this, Navigate.class);
+                target_space = intent.getStringExtra("mark");
+                intent2.putExtra("fuel", fuel);
+                intent2.putExtra("battery", current_remain);
+                intent2.putExtra("Mark", target_space);
 
                 startActivity(intent2);
-
-                finish();
             }//btn_modify_complete를 누르면 수행할 동작
 
         });
