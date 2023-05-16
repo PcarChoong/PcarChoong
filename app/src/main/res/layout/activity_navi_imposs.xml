@@ -8,17 +8,18 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutTmap2"
-        android:layout_width="393dp"
-        android:layout_height="362dp"
+        android:layout_width="339dp"
+        android:layout_height="331dp"
         android:layout_marginStart="13dp"
-        android:layout_marginTop="121dp"
         android:layout_marginEnd="13dp"
         android:orientation="vertical"
 
-        app:layout_constraintBottom_toTopOf="@+id/cs_spinner"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.456"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.347">
 
     </LinearLayout>
 
@@ -39,12 +40,12 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="62dp"
+        android:layout_height="74dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="18dp"
-        android:layout_marginBottom="110dp"
+        android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutTmap2"
         app:layout_constraintEnd_toStartOf="@+id/imposs_text1"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,16 +67,59 @@
         app:layout_constraintEnd_toEndOf="@+id/imposs_text1"
         app:layout_constraintTop_toBottomOf="@+id/imposs_text1" />
 
+    <TextView
+        android:id="@+id/Fast"
+        android:layout_width="135dp"
+        android:layout_height="39dp"
+        android:text="급속"
+        android:textColor="#F44336"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/Slow"
+        app:layout_constraintHorizontal_bias="0.474"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.7" />
+
+    <TextView
+        android:id="@+id/Slow"
+        android:layout_width="141dp"
+        android:layout_height="38dp"
+        android:text="완속"
+        android:textColor="#3F51B5"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.859"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.701" />
+
     <Spinner
-        android:id="@+id/cs_spinner"
-        android:layout_width="389dp"
+        android:id="@+id/fast_cs_spinner"
+        android:layout_width="188dp"
+        android:layout_height="55dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.029"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.799" />
+
+    <Spinner
+        android:id="@+id/slow_cs_spinner"
+        android:layout_width="182dp"
         android:layout_height="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.363"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.932"
+        app:layout_constraintStart_toEndOf="@+id/fast_cs_spinner"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.906" />
+        app:layout_constraintVertical_bias="0.799" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

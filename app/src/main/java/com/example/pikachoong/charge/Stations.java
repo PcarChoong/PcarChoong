@@ -24,7 +24,9 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import android.content.Intent;
@@ -62,12 +64,16 @@ public class Stations {
 
 
         try {
-            URL url= new URL("https://apis.data.go.kr/B552584/EvCharger/getChargerInfo?serviceKey=UhKarman7DgUATAB4EIurxt5ch40fMqqTm8MWt3CX%2Bna3%2BYttYFbg%2FayLNVgMB6%2FCXEITNP%2B36laZcUqY5wYDA%3D%3D&pageNo=1&numOfRows=200&zscode=11350&zscode=11710");
+            URL url= new URL("https://apis.data.go.kr/B552584/EvCharger/getChargerInfo?serviceKey=UhKarman7DgUATAB4EIurxt5ch40fMqqTm8MWt3CX%2Bna3%2BYttYFbg%2FayLNVgMB6%2FCXEITNP%2B36laZcUqY5wYDA%3D%3D&pageNo=1&numOfRows=10&zcode=11&zscode=11350&&zscode=11710");
 
             XmlPullParserFactory parserCreator = XmlPullParserFactory.newInstance();
             XmlPullParser parser = parserCreator.newPullParser();
 
-            parser.setInput(url.openStream(), null);
+            URLConnection t_connection = url.openConnection();
+            t_connection.setReadTimeout(3000);
+            InputStream t_inputStream = t_connection.getInputStream();
+
+            parser.setInput(t_inputStream, null);
 
             int parserEvent= parser.getEventType();
 

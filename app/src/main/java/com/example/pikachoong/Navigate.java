@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.pikachoong.autosearch.Poi;
+//import com.example.pikachoong.charge.Navi_Impossible;
 import com.example.pikachoong.charge.Navi_Impossible;
 import com.example.pikachoong.charge.Navi_Possible;
 import com.skt.Tmap.TMapData;
@@ -41,8 +42,8 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
     private TMapData tmapdata;
     private Context mContext = null;
     private float current_remain; // 현재 남아있는 배터리 잔량
-    private float need_battery;//도착 후 남아있을 배터리 잔량
-    private float fuel_eff;
+    private float remain_battery;//도착 후 남아있을 배터리 잔량
+    private float fuel_eff; //차량의 연비
     protected double distance; // 이동 거리
 
     private TextView txt;
@@ -50,10 +51,15 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
 
     private boolean m_bTrackingMode = true;
     private LinearLayout LinearLayoutTmap;
+    private double batt_remain;
     private ArrayList<SearchEntity> mListData;
     private AutoCompleteParse parse;
+    static String battery;
+    static String fuel;
     public ArrayList<Poi> p;
     public String mark;
+
+
 
     @Override
     public void onLocationChange(Location location){
@@ -72,7 +78,7 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
                 throw new RuntimeException(e);
             }
             Move();
-            
+
         }
     }
     @Override
@@ -113,21 +119,21 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
         mark = intent.getStringExtra("Mark");//"Mark"키 값으로 데이터를 받음
         //입력한 약속장소를 받아옴
 
-       tMapPointStart = new TMapPoint(st_lat, st_lon); // 출발지 좌표 입력(onLocationChange에서 설정한 위도, 경도 값)
+        tMapPointStart = new TMapPoint(st_lat, st_lon); // 출발지 좌표 입력(onLocationChange에서 설정한 위도, 경도 값)
 
-       recyclerViewAdapter = new RecyclerViewAdapter();
-       parse = new AutoCompleteParse(recyclerViewAdapter); //AutoCompleteParse 객체 생성
-       mListData = parse.execute(mark).get(); // 입력한 장소에 대한 전체 SearchEntity 객체 리스트를 반환 및 저장
-       this.p = parse.p; // execute함수로 인해 설정된 poi리스트 값을 저장
+        recyclerViewAdapter = new RecyclerViewAdapter();
+        parse = new AutoCompleteParse(recyclerViewAdapter); //AutoCompleteParse 객체 생성
+        mListData = parse.execute(mark).get(); // 입력한 장소에 대한 전체 SearchEntity 객체 리스트를 반환 및 저장
+        this.p = parse.p; // execute함수로 인해 설정된 poi리스트 값을 저장
 
 
-      for(int i=0;i<mListData.size();i++){
-           if(mark.equals(p.get(i).getName())){ // 입력한 장소명과 같은 리스트 요소를 찾았다면 그 장소의 위도, 경도값을 목표지점으로 설정
+        for(int i=0;i<mListData.size();i++){
+            if(mark.equals(p.get(i).getName())){ // 입력한 장소명과 같은 리스트 요소를 찾았다면 그 장소의 위도, 경도값을 목표지점으로 설정
                 tMapPointEnd = new TMapPoint(Double.parseDouble(p.get(i).getNoorLat()),Double.parseDouble(p.get(i).getNoorLon()));
-           }
-       }
+            }
+        }
 
-        Path path = new Path(getApplicationContext(), tmapview); 
+        Path path = new Path(getApplicationContext(), tmapview);
         distance = path.execute(tMapPointStart, tMapPointEnd).get();//출발지부터 목적지까지 Polyline을 그리고, 그려진 Polyline의 길이를 반환
 
         TMapMarkerItem endMarkerItem = new TMapMarkerItem();
@@ -144,23 +150,39 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
         p = this.p;
     }
 
+    public void Move() {
+        Intent intent = getIntent();
+        fuel = intent.getStringExtra("fuel"); //information 액티비티에서 전송한 연비 정보
+        battery = intent.getStringExtra("battery"); // information 액티비티에서 전송한 배터리 정보
 
-    public void Move(){
-        btn_move_navi = findViewById(R.id.btn_moveable);
-        btn_move_navi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(true) { // 판단 알고리즘 완성하면 수정할 것!!
-                    Intent intent1 = new Intent(Navigate.this, Navi_Impossible.class);
+
+        batt_remain = Double.parseDouble(battery) * 1000.0 - (double) (distance / Double.parseDouble(fuel)); // batt_remain : distance만큼의 거리를 이동하는데 필요한 배터리 용량
+        if (batt_remain > 0) {
+            btn_move_navi = findViewById(R.id.btn_moveable);
+            btn_move_navi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent1 = new Intent(Navigate.this, Navi_Possible.class);
                     intent1.putExtra("Mark", mark);
+                    intent1.putExtra("f", fuel);
+                    intent1.putExtra("B", battery);
                     startActivity(intent1); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
-                }else{
-                    Intent intent2 = new Intent(Navigate.this, Navi_Possible.class);
+                }
+            });
+        } //배터리 잔량이 0보다 크다면 목적지까지 이동 가능하다는 SubActivity로 이동
+        else if (batt_remain <= 0) {
+            btn_move_navi = findViewById(R.id.btn_moveable);
+            btn_move_navi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent2 = new Intent(Navigate.this, Navi_Impossible.class);
                     intent2.putExtra("Mark", mark);
+                    intent2.putExtra("f", fuel);
+                    intent2.putExtra("B", battery);
                     startActivity(intent2); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
                 }
-            }
-        });
+            });
+        }
     }
 
 }

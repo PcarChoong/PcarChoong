@@ -12,25 +12,14 @@
         android:layout_width="97dp"
         android:layout_height="70dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="120dp"
         android:text="차량정보\n입력"
         app:layout_constraintBottom_toTopOf="@+id/linearLayoutTmap"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/et_appointmenttime"
-        app:layout_constraintTop_toBottomOf="@+id/btn_confirm" />
+        app:layout_constraintTop_toBottomOf="@+id/et_appointmentSpace" />
 
-    <Button
-        android:id="@+id/btn_confirm"
-        android:layout_width="98dp"
-        android:layout_height="69dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="30dp"
-        android:text="확인"
-        app:layout_constraintBottom_toTopOf="@+id/btn_battery"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/et_appointmentSpace"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/currentText"
@@ -53,8 +42,9 @@
         android:id="@+id/et_appointmenttime"
         android:layout_width="137dp"
         android:layout_height="64dp"
+        android:layout_marginTop="90dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="1dp"
         android:ems="10"
         android:hint=" : 희망시각 입력"
         android:inputType="time"
@@ -68,24 +58,27 @@
         android:layout_width="115dp"
         android:layout_height="57dp"
         android:layout_marginTop="100dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginBottom="150dp"
         android:ems="10"
         android:hint=" : 목적지 입력"
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="@+id/currentText"
-        app:layout_constraintEnd_toStartOf="@+id/btn_confirm"
+        app:layout_constraintEnd_toStartOf="@+id/btn_battery"
         app:layout_constraintStart_toEndOf="@+id/appointmentSpaceText"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+
 
     <EditText
         android:id="@+id/et_currenttime"
         android:layout_width="128dp"
         android:layout_height="49dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="150dp"
         android:layout_marginEnd="136dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="80dp"
         android:ems="10"
         android:inputType="time"
         app:layout_constraintBottom_toTopOf="@+id/btn_battery"
@@ -114,7 +107,7 @@
         android:id="@+id/appointmentSpaceText"
         android:layout_width="105dp"
         android:layout_height="56dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="20dp"

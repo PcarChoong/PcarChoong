@@ -19,6 +19,7 @@ import org.json.JSONObject;
 public class Login extends AppCompatActivity {
     private EditText edit_id,et_pw;
     private Button login,register;
+    static String C;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +54,8 @@ public class Login extends AppCompatActivity {
                             if(success)
                             {
                                 String userName=jsonObject.getString("userName");
+                                C=jsonObject.getString("car");
+                                System.out.println(C+"dddd\n");
                                 Toast.makeText(getApplicationContext(),"로그인에 성공하였습니다.",Toast.LENGTH_SHORT).show();
                                 Intent intent= new Intent(Login.this,MainActivity.class);
                                 intent.putExtra("username",userName);
@@ -75,6 +78,8 @@ public class Login extends AppCompatActivity {
             }
         });
 
-
+    }
+    public static String getC(){
+        return C;
     }
 }
