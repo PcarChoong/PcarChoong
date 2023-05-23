@@ -40,7 +40,7 @@ public class Path_PassList extends AsyncTask<TMapPoint, Void, Double> {
             tMapPolyLine = tmapData.findPathDataWithType(TMapData.TMapPathType.CAR_PATH,tMapPoints[0], tMapPoints[1],tp, 0);
             tMapPolyLine.setLineColor(Color.BLUE);
             tMapPolyLine.setLineWidth(5);
-            tmapview.addTMapPolyLine("Line2", tMapPolyLine);
+            tmapview.addTMapPolyLine("Line3", tMapPolyLine);
         }
         catch(Exception e){
             e.printStackTrace();

@@ -27,6 +27,7 @@ public class information extends AppCompatActivity {
     private String current_remain;
 
     private String target_space;
+    private String tg_tm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +54,11 @@ public class information extends AppCompatActivity {
 
                 intent2 = new Intent(information.this, Navigate.class);
                 target_space = intent.getStringExtra("mark");
+                tg_tm = intent.getStringExtra("tg_tm");
                 intent2.putExtra("fuel", fuel);
                 intent2.putExtra("battery", current_remain);
                 intent2.putExtra("Mark", target_space);
-
+                intent2.putExtra("tg_tm",tg_tm);
 
                 startActivity(intent2);
             }//btn_modify_complete를 누르면 수행할 동작

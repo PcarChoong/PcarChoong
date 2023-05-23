@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
 
     private TMapData tmapdata;
     protected String space;
+    private String tg_tm;
     private String t;
     @Override
     public void onLocationChange(Location location){
@@ -104,14 +105,16 @@ public class MainActivity extends AppCompatActivity implements TMapGpsManager.on
     }
 
     public void MoveRemaining(){
-        Intent intent1 = getIntent();
         btn_remain = findViewById(R.id.btn_battery);
+        et_appointmentTime = (EditText) findViewById(R.id.et_appointmenttime);
         btn_remain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tg_tm = et_appointmentTime.getText().toString();
                 Intent intent = new Intent(MainActivity.this, information.class);
                 //Intent(현재 액티비티(this), 이동할 액티비티(클래스))
                 intent.putExtra("mark", space);//"mark"라는 키값으로 목적지 명 전달
+                intent.putExtra("tg_tm", tg_tm);
                 startActivity(intent); // activity 이동
             }//btn_batery를 클릭하면 수행할 동작
         });

@@ -58,7 +58,7 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
     static String fuel;
     public ArrayList<Poi> p;
     public String mark;
-
+    private String tg_tm;
 
 
     @Override
@@ -154,7 +154,7 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
         Intent intent = getIntent();
         fuel = intent.getStringExtra("fuel"); //information 액티비티에서 전송한 연비 정보
         battery = intent.getStringExtra("battery"); // information 액티비티에서 전송한 배터리 정보
-
+        tg_tm = intent.getStringExtra("tg_tm");
 
         batt_remain = Double.parseDouble(battery) * 1000.0 - (double) (distance / Double.parseDouble(fuel)); // batt_remain : distance만큼의 거리를 이동하는데 필요한 배터리 용량
         if (batt_remain > 0) {
@@ -166,6 +166,7 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
                     intent1.putExtra("Mark", mark);
                     intent1.putExtra("f", fuel);
                     intent1.putExtra("B", battery);
+                    intent1.putExtra("tg_tm", tg_tm);
                     startActivity(intent1); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
                 }
             });
@@ -179,6 +180,7 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
                     intent2.putExtra("Mark", mark);
                     intent2.putExtra("f", fuel);
                     intent2.putExtra("B", battery);
+                    intent2.putExtra("tg_tm", tg_tm);
                     startActivity(intent2); // 해당 화면으로 넘어가기와 값 전달을 동시에 해줌
                 }
             });

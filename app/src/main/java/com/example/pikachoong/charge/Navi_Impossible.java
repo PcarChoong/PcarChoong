@@ -1,5 +1,6 @@
 package com.example.pikachoong.charge;
 
+import static java.lang.Thread.sleep;
 import static java.sql.Types.NULL;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -128,6 +129,8 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
     static float shav_batt; // 쉐보레 볼트 EV(1세대) 배터리 용량
     static float sm3_batt; // 르노삼성 SM3 배터리 용량
     private Intent intent;
+    private String tg_tm;
+    private Thread thread;
     public void onLocationChange(Location location){
         //onLocationChange함수는 일반 메서드보다 호출 순서가 조금 느림 -> onLocationChange를 먼저 수행한 후
         // navigate()함수를 실행하도록 하여야 변수 값의 혼동이 없을 듯.
@@ -278,15 +281,14 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
         }
 
     for(int i=0;i<fast_cs.size();i++) { // 각 충전소를 경유할 때의 이동 소요 시간 출력
-        System.out.println(fast_cs.get(i).lng +", "+fast_cs.get(i).lat+"위도/경도");
+        System.out.println(fast_cs.get(i).lng +", "+fast_cs.get(i).lat+"경도/위도");
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\"tollgateFareOption\":16,\"roadType\":32,\"directionOption\":1," +
-                "\"endX\":"+tg_lon+",\"endY\":"+tg_lat+",\"endRpFlag\":\"G\",\"reqCoordType\":\"WGS84GEO\"," +
-                "\"startX\":"+st_lon+",\"startY\":"+st_lat+",\"gpsTime\":\""+formattedNowD+formattedNowT+"\",\"speed\":10," +
-                "\"uncetaintyP\":1,\"uncetaintyA\":1,\"uncetaintyAP\":1,\"carType\":0,\"startName\":\""+encodeStWord+"\",\"endName\":\""+URLEncoder.encode(p.get(n).getName(), "UTF-8")+"\"," +
-                "\"passList\":\""+fast_cs.get(i).lng+","+fast_cs.get(i).lat+"\",\"gpsInfoList\":\"126.939376564495,37.470947057194365,120430,20,50,5,2,12,1_126.939376564495,37.470947057194365,120430,20,50,5,2,12,1\"," +
-                "\"detailPosFlag\":\"2\",\"resCoordType\":\"WGS84GEO\",\"sort\":\"index\"}");
+        RequestBody body = RequestBody.create(mediaType, "{" +
+                "\"endX\":"+tg_lon+",\"endY\":"+tg_lat+","+
+                "\"startX\":"+st_lon+",\"startY\":"+st_lat+"," +
+                "\"passList\":\""+fast_cs.get(i).lng+","+fast_cs.get(i).lat+"\"," +
+                "\"detailPosFlag\":\"2\"}");
 
 
         Request request = new Request.Builder()
@@ -298,36 +300,42 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
                 .build();
 
 
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Request request, IOException e) {}
-            @Override
-            public void onResponse(Response response) throws IOException {
-                line = response.body().string();
-            }
-        }); // 응답값들을 비동기 처리함(실시간으로 예상 소요시간을 받아와야 하기 때문)
+
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Request request, IOException e) {
+                }
+
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    line = response.body().string();
+                }
+            }); // 응답값들을 비동기 처리함(실시간으로 예상 소요시간을 받아와야 하기 때문)
+
         while(true){
             if(line!=null)
                 break;
             System.out.println(line);
         }// line을 받아올 때까지 기다림
             System.out.println("abcdef");
-        if (line != null) {
-            JSONObject json = new JSONObject(line); // open API를 통해 JSON형태의 값을 받음
-            JSONArray feat = json.getJSONArray("features"); // features 객체 배열값을 받아옴
-            JSONObject prop = feat.getJSONObject(0).getJSONObject("properties"); // features배열의 properties라는 객체를 받아옴
-            fast_t.add(prop.getInt("totalTime")); // 총 소요 시간을 integer배열에 저장
-            while(true){
-                System.out.println(i+"num");
-                System.out.println(fast_t.get(i)+"qqqq");
-                System.out.println(Charging_Time(fast_cs.get(i),C)+"kkkk");
-                if(fast_t.get(i) != null)
-                    break;
-            }// 이동 시간 받아올 때까지 기다림
 
-            fast_map.put(fast_cs.get(i), fast_t.get(i)+Charging_Time(fast_cs.get(i),C)); // <충전소 객체, 충전소를 경유하여 이동하는데 걸리는 '총 소요 시간'>
-            System.out.println("bbbbb");
-        }
+            if (line != null) {
+                System.out.println(line);
+                JSONObject json = new JSONObject(line); // open API를 통해 JSON형태의 값을 받음
+                JSONArray feat = json.getJSONArray("features"); // features 객체 배열값을 받아옴
+                JSONObject prop = feat.getJSONObject(0).getJSONObject("properties"); // features배열의 properties라는 객체를 받아옴
+                fast_t.add(prop.getInt("totalTime")); // 총 소요 시간을 integer배열에 저장
+
+                System.out.println(i + "num");
+                System.out.println(fast_t.get(i) + "qqqq");
+                System.out.println(Charging_Time(fast_cs.get(i), C) + "kkkk");
+
+
+                fast_map.put(fast_cs.get(i), fast_t.get(i) + Charging_Time(fast_cs.get(i), C)); // <충전소 객체, 충전소를 경유하여 이동하는데 걸리는 '총 소요 시간'>
+                System.out.println("bbbbb");
+            }
+
     }
 
     for(int i=0;i<slow_cs.size();i++) { // 송파구, 노원구 충전소 정보를 받아온 완속 arraylist배열의 크기 만큼 반복문 시행 -> 각 충전소를 경유할 때의 이동 소요 시간 출력
@@ -381,8 +389,8 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             }
         }
         List<Map.Entry<charging_station, Integer>> fast_tm_entryList = new ArrayList<>(fast_map.entrySet());
-//        fast_tm_entryList.sort(Map.Entry.comparingByValue()); // Map.Entry의 comparingByvalue를 이용하여 fast_map의 요소들을 value기준으로 오름차순 정렬
-// 비교함수 Comparator를 사용하여 오름차순으로 정렬
+//        fast_tm_entryList.sort(Map.Entry.comparingByValue());
+
         Collections.sort(fast_tm_entryList, new Comparator<Map.Entry<charging_station, Integer>>() {
             // compare로 값을 비교
             public int compare(Map.Entry<charging_station, Integer> obj1, Map.Entry<charging_station, Integer> obj2) {
@@ -456,7 +464,10 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
     }
     void Top3_Fast_CS_View(ArrayList<charging_station> sorted_fast_cs, ArrayList<Integer> sorted_fast_t){
 
+        Intent it = getIntent();
+        tg_tm = it.getStringExtra("tg_tm");
         int hour=0, min=0;
+        int j=0;
         for(int k=0;k<3;k++)
         {
             System.out.println("sssada\n");
@@ -478,8 +489,11 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
                 intent = new Intent(Navi_Impossible.this, Selected_CS_Path.class);
                 intent.putExtra("fs_cs_lat", temp_fs.lat); // 급속 충전소 위도 값 전송
                 intent.putExtra("fs_cs_lng", temp_fs.lng); // 급속 충전소 경도 값 전송
+                intent.putExtra("entire_tm", sorted_fast_t.get(i));
+                intent.putExtra("tg_tm", tg_tm);
+                intent.putExtra("Mark", mark);
                 startActivity(intent);
-                Toast.makeText(getApplicationContext(), temp_fs.lat + "/" + temp_fs.lng, Toast.LENGTH_LONG).show(); //출력 용
+               // Toast.makeText(getApplicationContext(), temp_fs.lat + "/" + temp_fs.lng, Toast.LENGTH_LONG).show(); //출력 용
             }
 
             @Override
@@ -488,6 +502,8 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
 
     }
     void Top3_Slow_CS_View(ArrayList<charging_station> sorted_slow_cs, ArrayList<Integer> sorted_slow_t){
+        Intent it = getIntent();
+        tg_tm = it.getStringExtra("tg_tm");
         int hour = 0, min = 0;
         for(int i=0;i<3;i++)
         {
@@ -506,11 +522,14 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                temp_sl = sorted_slow_cs.get(i);
+                    temp_sl = sorted_slow_cs.get(i);
 
                     Intent intent = new Intent(Navi_Impossible.this, Selected_CS_Path.class);
                     intent.putExtra("sl_cs_lat", temp_sl.lat); // 완속 충전소 위도 값 전송
                     intent.putExtra("sl_cs_lng", temp_sl.lng); // 완속 충전소 경도 값 전송
+                    intent.putExtra("entire_tm", sorted_slow_t.get(i));
+                    intent.putExtra("Mark", mark);
+                    intent.putExtra("tg_tm", tg_tm);
                     startActivity(intent);
                     //    Toast.makeText(getApplicationContext(), temp.lat + "/" + temp.lng, Toast.LENGTH_LONG).show(); //출력 용
             }
