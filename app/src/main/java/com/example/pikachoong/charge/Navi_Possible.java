@@ -102,7 +102,6 @@ public class Navi_Possible extends AppCompatActivity implements TMapGpsManager.o
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            Navigation();
 
         }
     }
@@ -166,21 +165,5 @@ public class Navi_Possible extends AppCompatActivity implements TMapGpsManager.o
         tmapview.setZoomLevel(12);
     }
 
-    public void Navigation(){
 
-        cxt = this;
-        btn_navigation = findViewById(R.id.navigate_btn);
-
-        btn_navigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                TMapTapi tMapTapi = new TMapTapi(cxt);
-
-                tMapTapi.invokeNavigate("", (float)tMapPointEnd.getLongitude(), (float)tMapPointEnd.getLatitude(), 0, true);
-
-                System.out.println(tMapTapi.isTmapApplicationInstalled()+"  sss");
-            }
-        });
-    }
 }

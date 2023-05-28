@@ -60,17 +60,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/navigate_btn"
-        android:layout_width="189dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="117dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="106dp"
-        android:layout_marginBottom="21dp"
-        android:text="경로 안내"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutTmap3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

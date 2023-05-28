@@ -316,9 +316,9 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
         while(true){
             if(line!=null)
                 break;
-            System.out.println(line);
+            System.out.println("fast line 대기중...");
         }// line을 받아올 때까지 기다림
-            System.out.println("abcdef");
+            System.out.println("fast_line 대기 완료!!!");
 
             if (line != null) {
                 System.out.println(line);
@@ -371,9 +371,9 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
               {
                   if(line!=null)
                      break;
-                 System.out.println(line);
+                 System.out.println("slow_line 대기중....");
               } // line을 받아올때까지 기다림
-            System.out.println("ghijk");
+            System.out.println("slow_line 대기 완료!!");
             if (line != null) {
                 JSONObject json = new JSONObject(line); // open API를 통해 JSON형태의 값을 받음
                 JSONArray feat = json.getJSONArray("features"); // features 객체 배열값을 받아옴
@@ -465,7 +465,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
     void Top3_Fast_CS_View(ArrayList<charging_station> sorted_fast_cs, ArrayList<Integer> sorted_fast_t){
 
         Intent it = getIntent();
-        tg_tm = it.getStringExtra("tg_tm");
+        tg_tm = it.getStringExtra("tg_tm"); // 도착 희망 시각
         int hour=0, min=0;
         int j=0;
         for(int k=0;k<3;k++)
