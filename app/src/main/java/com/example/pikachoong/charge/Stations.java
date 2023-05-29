@@ -65,7 +65,7 @@ public class Stations {
 
         try {
             URL url= new URL("https://apis.data.go.kr/B552584/EvCharger/getChargerInfo?serviceKey=UhKarman7DgUATAB4EIurxt5ch40fMqqTm8MWt3CX%2Bna3%2BYttYFbg%2FayLNVgMB6%2FCXEITNP%2B36laZcUqY5wYDA%3D%3D&pageNo=1&numOfRows=10&zcode=11&zscode=11350&&zscode=11710");
-
+            //zscode=11350&&zscode=11710 는 송파구와 노원구의 시도코드를 의미한다.
             XmlPullParserFactory parserCreator = XmlPullParserFactory.newInstance();
             XmlPullParser parser = parserCreator.newPullParser();
 
