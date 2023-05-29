@@ -389,7 +389,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
             }
         }
         List<Map.Entry<charging_station, Integer>> fast_tm_entryList = new ArrayList<>(fast_map.entrySet());
-//        fast_tm_entryList.sort(Map.Entry.comparingByValue());
+//        fast_tm_entryList.sort(Map.Entry.comparingByValue());, HashMap을 value를 기준으로 정렬하기 위해 리스트화하였다.
 
         Collections.sort(fast_tm_entryList, new Comparator<Map.Entry<charging_station, Integer>>() {
             // compare로 값을 비교
