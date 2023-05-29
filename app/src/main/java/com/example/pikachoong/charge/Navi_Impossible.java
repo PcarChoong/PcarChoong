@@ -338,7 +338,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
 
     }
 
-    for(int i=0;i<slow_cs.size();i++) { // 송파구, 노원구 충전소 정보를 받아온 완속 arraylist배열의 크기 만큼 반복문 시행 -> 각 충전소를 경유할 때의 이동 소요 시간 출력
+    for(int i=0;i<slow_cs.size();i++) { // 충전소 정보를 받아온 완속 arraylist배열의 크기 만큼 반복문 시행 -> 각 충전소를 경유할 때의 이동 소요 시간 출력
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"tollgateFareOption\":16,\"roadType\":32,\"directionOption\":1," +
@@ -401,7 +401,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
         for(Map.Entry<charging_station, Integer> entry : fast_tm_entryList){ // fast_tm_entryList의 요소들을 한번씩 읽음
             System.out.println(entry.getValue()+"mmmm");
             sorted_fast_cs.add(entry.getKey()); // (value 기준으로) 정렬된 충전소 객체를(총 소요시간이 적은 순으로) top3만 arrayList에 추가
-            sorted_fast_t.add(entry.getValue()); // 정렬된 총 소요 시간을 (top3만) arrayList에 추가
+            sorted_fast_t.add(entry.getValue()); // 정렬된 총 소요 시간을 arrayList에 추가
         }
        // Top3_Fast_CS_View(sorted_fast_cs, sorted_fast_t); // 상위 3개의 급속 충전소들만 스피너에 띄움
 
