@@ -156,7 +156,7 @@ public class Navigate extends AppCompatActivity implements TMapGpsManager.onLoca
         battery = intent.getStringExtra("battery"); // information 액티비티에서 전송한 배터리 정보
         tg_tm = intent.getStringExtra("tg_tm");
 
-        batt_remain = Double.parseDouble(battery) * 1000.0 - (double) (distance / Double.parseDouble(fuel)); // batt_remain : distance만큼의 거리를 이동하는데 필요한 배터리 용량
+        batt_remain = Double.parseDouble(battery) * 1000.0 - (double) (distance / Double.parseDouble(fuel)); // batt_remain : distance만큼의 거리를 이동하고 나서 
         if (batt_remain > 0) {
             btn_move_navi = findViewById(R.id.btn_moveable);
             btn_move_navi.setOnClickListener(new View.OnClickListener() {
