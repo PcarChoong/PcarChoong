@@ -152,7 +152,7 @@ public class Selected_CS_Path extends AppCompatActivity implements TMapGpsManage
         }
 
         tp = new ArrayList<>();
-        tp.add(new TMapPoint(Double.parseDouble(lat), Double.parseDouble(lon))); 
+        tp.add(new TMapPoint(Double.parseDouble(lat), Double.parseDouble(lon))); //lat : 경유하는 충전소의 latitude, lon : 경유하는 충전소의 longitude
 
         Path_PassList path_pl = new Path_PassList(getApplicationContext(), tmapview, tp);
         distance = path_pl.execute(tMapPointStart, tMapPointEnd).get();//출발지부터 목적지까지(충전소를 경유하는) Polyline을 그리고, 그려진 Polyline의 길이를 반환
