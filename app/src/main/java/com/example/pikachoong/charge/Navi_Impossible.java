@@ -325,7 +325,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
                 JSONObject json = new JSONObject(line); // open API를 통해 JSON형태의 값을 받음
                 JSONArray feat = json.getJSONArray("features"); // features 객체 배열값을 받아옴
                 JSONObject prop = feat.getJSONObject(0).getJSONObject("properties"); // features배열의 properties라는 객체를 받아옴
-                fast_t.add(prop.getInt("totalTime")); // 총 소요 시간을 integer배열에 저장
+                fast_t.add(prop.getInt("totalTime")); // 총 이동 시간을 integer배열에 저장
 
                 System.out.println(i + "num");
                 System.out.println(fast_t.get(i) + "qqqq");
@@ -378,7 +378,7 @@ public class Navi_Impossible extends AppCompatActivity implements TMapGpsManager
                 JSONObject json = new JSONObject(line); // open API를 통해 JSON형태의 값을 받음
                 JSONArray feat = json.getJSONArray("features"); // features 객체 배열값을 받아옴
                 JSONObject prop = feat.getJSONObject(0).getJSONObject("properties"); // features배열의 properties라는 객체를 받아옴
-                slow_t.add(prop.getInt("totalTime")); // 총 소요 시간을 integer배열에 저장
+                slow_t.add(prop.getInt("totalTime")); // 총 이동 시간을 integer배열에 저장
                 while(true){
                     if(slow_t.get(i)!=null)
                         break;
